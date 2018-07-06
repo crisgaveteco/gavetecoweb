@@ -1,0 +1,58 @@
+<%
+    var nroRet = "0".repeat(7-nroRet.toString.length).concat(parseInt(nroRet));
+    var prov = req.proveedor.codigo;
+    var razonSoc = req.proveedor.nombre;
+    var cuit = req.proveedor.cuit;
+    var fechaFc = req.factura.fechaFc;
+    var neto = parseFloat(req.factura.netoG).toFixed(2);
+    var iva = parseFloat(req.factura.ivaFc).toFixed(2);
+    var impRet = parseFloat(req.retencion.importe).toFixed(2);
+    var domicilio = req.proveedor.direccion+","+req.proveedor.localidad+","+req.proveedor.provincia;
+    var factura = req.factura.ptoVta+"-"+req.factura.nroFc;
+    var concepto = req.retencion.concepto;
+    var hoy=new Date(req.retencion.fechaRet);
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
+    var porcRet = req.retencion.porcRet;
+    var regimen = req.retencion.regimen;
+%>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Ret.IVA FC<%=factura%></title>
+        <link href="/css/retenciones/comprobante.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <form action="/">
+            <div id="mainConteiner">
+                <div id='encabezado'>
+                    <span id="membrete">
+                        <div class="bajada" id="GAVETECO"><b>GAVETECO S.A.I.C.F.e.I.</b></div>
+                        <div class="bajada">Av. BELGRANO 1281 - 1º Piso</div>
+                        <div class="bajada">(1093) Capital Federal</div>
+                        <div class="bajada">C.U.I.T.: 30-50373996-4</div>
+                        <div class="bajada">I.V.A. Responsable Inscripto</div>
+                    </span>
+                    <span id="comprobante">
+                        <div>COMPROBANTE</div>
+                        <div id="nroComp">Nº 0000 - <%=nroRet%></div>
+                    </span>
+                </div>
+                <div id="cuerpo">
+                    <div id="titulo">Constancia de Retencion IVA R.G. 18 AFIP</div>
+                    <div class="lineaDatos" id="lineaProv"><label>Proveedor: </label><div id="provSpan" class="datoRet"><%=razonSoc%></div><label>C.U.I.T: </label><div  class="datoRet" id="cuitSpan"><%=cuit%></div></div>
+                    <div class="lineaDatos" id="lineaDom"><label>Domicilio: </label><span id="domSpan" class="datoRet"><%=domicilio%></span></div>
+                    <div class="lineaDatos" id="lineaFac"><label>Factura: </label><span class="datoRet" id="facSpan"><%=factura%></span><label>Fecha: </label><span class="datoRet" id="fechaSpan"><%=fechaFc%></span></div>
+                    <div class="lineaDatos" id="lineaConc"><label>Concepto por el cual se practico la retencion:</label><span class="datoRet" id="concSpan"><%=concepto%></span></div>
+                    <div class="lineaDatos" id="lineaNeto"><label>Importe Neto $:</label><span class="datoRet" id="netoSpan"><%=neto%></span></div>
+                    <div class="lineaDatos" id="lineaIva"><label>Importe IVA: $</label><span class="datoRet" id="ivaSpan"><%=iva%></span></div>
+                    <div class="lineaDatos" id="lineaImpRet"><label>Retencion: </label><span class="datoRet" id="porcSpan"><%=porcRet%></span><label>% $</label><span class="datoRet" id="impRetSpan"><%=impRet%></span></div>
+                    <div class="lineaDatos" id="lineaRegimen"><label>Regimen: </label><span  class="datoRet" id="regimenSpan"><%=regimen%></span></div>
+                    <div class="lineaDatos" id="lineaDatosFinal"><label>Buenos Aires: </label><span  class="datoRet" id="fechaRetSpan"><%=fechaRet%></span></div>
+                </div>
+            </div>
+            <div><input type="submit"></div>             
+        </form>
+    </body>
+</html>

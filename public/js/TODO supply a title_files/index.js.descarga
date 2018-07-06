@@ -1,0 +1,42 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(document).ready(function () {
+    setInterval(refrescarTablaIva(), 30000);
+});
+
+function agregarFilaRetencion(retencion){
+    $("#resumenIva table tbody").append('<tr><td>'+retencion.id+
+            '</td><td>'+retencion.prov+
+            '</td><td>'+retencion.ret_importe.toFixed(2)+
+            '</td><td>'+retencion.nroFactura+
+            '</td><td>'+retencion.ret_fecha.toString().substr(0,10)+
+            '</td></tr>');
+    
+    
+}
+
+function refrescarTablaIva() {
+  $.post({
+            url: 'IvaQuincena',
+            contentType: 'application/json',
+            data: JSON.stringify({fechaDesde: new Date("2018-05-01") ,fechaHasta:new Date("2018-05-15")}),
+            cache: false,
+            async: true,
+            success: function (data) {
+                $("#resumenIva tbody").html("");
+                var rets=JSON.parse(data);
+                rets.forEach(function(retencion){
+                    agregarFilaRetencion(retencion);
+                });
+            },
+            error: function (response)
+            {
+                alert('error al guardar los datos');
+            }
+            //return false;
+        });
+}

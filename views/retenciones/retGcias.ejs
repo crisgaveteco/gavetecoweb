@@ -1,0 +1,112 @@
+<%
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var nroRet = "0".repeat(7-nroRet.toString.length).concat(parseInt(nroRet));
+    var razonSoc = req.proveedor.nombre;
+    var cuit = req.proveedor.cuit;
+    var fechaIn = new Date(req.factura.fechaFc);
+    var fechaFc = fechaIn.toLocaleDateString('es-ES', { timeZone: 'UTC' });
+    //var fechaFc = fechaIn.getDate()+"/"+fechaIn.getMonth()+"/"+fechaIn.getFullYear();
+    var domicilio = req.proveedor.direccion+","+req.proveedor.localidad+","+req.proveedor.provincia;
+    var factura = req.factura.nrosFc;
+    var concepto = req.retencion.concepto;
+    var hoy=new Date(req.retencion.fechaRet);
+    var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
+    var porcRet = req.retencion.porcRet;
+    var importeRet = parseFloat(req.retencion.importe).toFixed(2);
+    var importeRetAnt = parseFloat(req.retencion.importeAnt).toFixed(2);
+    var importeARet = parseFloat(req.retencion.aRetener).toFixed(2);
+    var regimen = req.retencion.regimen;
+    var anteriorBruto = parseFloat(req.retencion.cuadro.anteriores.bruto).toFixed(2);
+    var anteriorDeducciones= parseFloat(req.retencion.cuadro.anteriores.deduc).toFixed(2);
+    var anteriorNeto= parseFloat(req.retencion.cuadro.anteriores.neto).toFixed(2);
+    var bruto=parseFloat(req.retencion.cuadro.actual.bruto).toFixed(2);
+    var deducciones=parseFloat(req.retencion.cuadro.actual.deduc).toFixed(2);
+    var neto= parseFloat(req.retencion.cuadro.actual.neto).toFixed(2);
+    var totalBruto=parseFloat(req.retencion.cuadro.actual.bruto).toFixed(2);
+    var totalDeducciones=parseFloat(req.retencion.cuadro.actual.deduc).toFixed(2);
+    var totalNeto=parseFloat(req.retencion.cuadro.actual.neto).toFixed(2);
+    var fechaDDJJ = (parseInt(hoy.getMonth())+1)+"/"+hoy.getFullYear();
+    var minimo = parseFloat(req.retencion.minimo).toFixed(2);
+    var subtotal = parseFloat(req.retencion.subtotal).toFixed(2);
+    var importeARet = parseFloat(req.retencion.aRetener).toFixed(2);
+    var importeFijo = parseFloat(req.retencion.importeFijo).toFixed(2);
+    
+%>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Ret.GCIAS</title>
+        <link href="/css/retenciones/comprobanteGCIAS.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <form action="/">
+            <div id="mainConteiner">
+                <div id='encabezado'>
+                    <span id="membrete">
+                        <div class="bajada" id="GAVETECO"><b>GAVETECO S.A.I.C.F.e.I.</b></div>
+                        <div class="bajada">Av. BELGRANO 1281 - 1º Piso</div>
+                        <div class="bajada">(1093) Capital Federal</div>
+                        <div class="bajada">C.U.I.T.: 30-50373996-4</div>
+                        <div class="bajada">I.V.A. Responsable Inscripto</div>
+                    </span>
+                    <span id="comprobante">
+                        <div>COMPROBANTE</div>
+                        <div id="nroComp">Nº 0000 - <%=nroRet%></div>
+                    </span>
+                </div>
+                <div id="cuerpo">
+                    <div id="titulo">Constancia de Retención Ganancias R.G. 2784</div>
+                    <div class="lineaDatos" id="lineaProv"><label>Beneficiario del pago: </label><div id="provSpan" class="datoRet imprimir"><%=razonSoc%></div><label>C.U.I.T: </label><div class="datoRet imprimir" id="cuitSpan"><%=cuit%></div></div>
+                    <div class="lineaDatos" id="lineaDom"><label>Domicilio: </label><span id="domSpan" class="datoRet imprimir"><%=domicilio%></span></div>
+                    <div class="lineaDatos" id="lineaFac"><label>Factura Nº: </label><input class="datoRet imprimir" id="facSpan" value="<%=factura%>"><label>Fecha: </label><input class="datoRet imprimir" id="fechaSpan" value="<%=fechaFc%>"></div>
+                    <div class="lineaDatos" id="lineaConc"><label>Concepto por el cual se practico la retencion:</label><span class="datoRet imprimir" id="concSpan"><%=concepto%></span></div>
+                    <div class="lineaDatos" id="lineaCalc"><label>Cálculo de la retención del mes: </label></div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Detalle</th>
+                                <th>Bruto</th>
+                                <th>Deducciones</th>
+                                <th>Neto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primerColumna">Anteriores</td><td><input class="datosCuadro imprimir" value="<%=anteriorBruto%>"></td><td><input class="datosCuadro imprimir" value="<%=anteriorDeducciones%>"></td><td><input class="datosCuadro imprimir" value="<%=anteriorNeto%>"></td>
+                            </tr>
+                            <tr>
+                                <td class="primerColumna">Esta liquidacion</td><td><input class="datosCuadro imprimir" value="<%=bruto%>"></td><td><input class="datosCuadro imprimir" value="<%=deducciones%>"></td><td><input class="datosCuadro imprimir" value="<%=neto%>"></td>
+                            </tr>
+                            <tr>
+                                <td class="primerColumna">Acumulado</td><td><input class="datosCuadro imprimir" value="<%=totalBruto%>"></td><td><input class="datosCuadro imprimir" value="<%=totalDeducciones%>"></td><td><input class="datosCuadro imprimir" value="<%=totalNeto%>"></td>
+                            </tr>
+                            <tr class="primeras2">
+                                <td></td><td class="primerColumna negrita rellenoUltFilas" colspan="2"><span class=""></span><span>Minimo correspondiente a: </span></td><td><input class="imprimir" value="<%=minimo%>"></td>
+                            </tr>
+                            <tr class="primeras2">
+                                <td></td><td class="primerColumna negrita" colspan="2"><span class="rellenoUltFilas"></span>SUBTOTAL: </td><td><input class="imprimir" value="<%=subtotal%>"></td>
+                            </tr>
+                            <tr class="delMedio">
+                                <td></td><td class="primerColumna negrita" colspan="2"><span class="rellenoUltFilas"></span><span>Retencion:</span><span><input id="porcentajeRet" class="datosCuadro imprimir" value="<%=porcRet%>"></span><span> %</span></td><td><input class="imprimir" value="<%=importeRet%>"></td>
+                            </tr>
+                            <tr class="delMedio">
+                                <td></td><td class="primerColumna negrita" colspan="2"><span class="rellenoUltFilas"></span>Anteriores: </td><td><input class="imprimir" value="<%=importeRetAnt%>"></td>
+                            </tr>
+                            <tr class="delMedio <%if(parseFloat(importeFijo)==0){%>oculto<%}else{%>imprimir<%}%>"> 
+                                <td></td><td class="primerColumna negrita" colspan="2"><span class="rellenoUltFilas"></span>Fijo: </td><td><input class="" value="<%=importeFijo%>"></td>
+                            </tr>
+                            <tr class="Aretener">
+                                <td></td><td class="primerColumna negrita" colspan="2"><span class="rellenoUltFilas"></span>A RETENER </td><td><input class="imprimir" value="<%=importeARet%>"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                                <div class="lineaDatos lineaDatosFinal" id="lineaDatosDDJJ"><label for="fechaDDJJ">Esta liquidación practicada se informará en la DDJJ correspondiente al periodo: </label><input class="fechaDDJJ imprimir" name="fechaDDJJ" value="<%=fechaDDJJ%>"></span></div>
+                <div class="lineaDatos lineaDatosFinal" id="ultimalinea"><label>Buenos Aires, </label><input class="fechaRetencion imprimir" value="<%=fechaRet%>"></div>
+            </div>
+        </div>
+        <div><input type="submit"></div><input type="text" name="codProv"><input type="text" name="pago">            
+    </form>
+</body>
+</html>

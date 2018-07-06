@@ -1,0 +1,38 @@
+#container{
+    border: 2px black solid;
+}
+#tomas,#contenidosello{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 15px;
+}
+#tomas div,#contenidosello div{
+    margin-top: 10px;
+}
+#tomas{
+    text-align: center;
+}
+#sello{
+    display:flex;
+    border: 2px black solid;
+    margin: 20px;
+    width: 350px;
+    height: 100px;
+}
+#contenidosello{
+    font-style: bold;
+    font-weight: 800;
+}
+.sello0{
+    color: blueviolet;
+}
+.sello1{
+    color: green;
+}
+sello2{
+    color: red;
+}
+sello3{
+    color: blue;
+}

@@ -1,0 +1,134 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 12-abr-2018, 11:03:22
+    Author     : user
+*/
+body{
+    transform: scale(.9)
+}
+*{
+    font-family: sans-serif;
+}
+.bajada{
+
+}
+#membrete{
+    text-align: center;
+
+}
+#encabezado{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 5%;
+    margin-top:2.5%;
+    margin-bottom: 20px;
+}
+
+#mainConteiner{
+    display: block;
+    margin: 0 auto;
+    width: 565px;
+    height: 683px;
+    border: 2px #000 solid;
+}
+#titulo{
+    text-decoration: underline;
+    font-size: 19px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 2px;
+    margin-bottom: 24px;
+}
+.bajada{
+    font-size: 12px;
+}
+#GAVETECO{
+    font-size: 18px;
+}
+.lineaDatos{
+    display: block;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 15px;
+    margin-bottom: 7px;
+
+}
+#provSpan{
+    width: 45%;
+}
+#cuitSpan{
+    display: inline-block;
+    width: 20%;
+}
+#facSpan{
+    width: 50%;
+}
+#concSpan{
+    width:42%;
+}
+#fechaSpan{
+    width: 18%;
+}
+#netoSpan,#ivaSpan{
+    text-align: right;
+}
+#netoSpan{
+    width: 39.5%;
+}
+#ivaSpan{
+    width: 41%;
+}
+#porcSpan{
+    width: 22%;
+}
+#impRetSpan{
+    width: 27.5%;
+}
+#fechaRetSpan{
+    width: 80%;
+}
+#cuerpo{
+    display: block;
+}
+#cuerpo label{
+    font-size: 14px;
+}
+.datoRet{
+    display: inline-block;
+    vertical-align: central;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+    font-size: 13px;
+}
+#lineaFac{
+    margin-top: 16px;
+}
+#lineaConc{
+    margin-bottom: 1px;
+}
+#lineaNeto{
+    margin-top:17px;
+}
+#lineaIva{
+    margin-top: 20px;
+}
+
+#lineaImpRet{
+    margin-top: 23px;
+}
+#lineaRegimen{
+    margin-top: 26px;
+}
+#lineaDatosFinal{
+    margin-top: 38px;
+}
+.lineaDatos span{
+    text-align: center;
+    margin-left: 10px;
+}

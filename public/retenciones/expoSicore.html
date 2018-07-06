@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Exportación a SICORE</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+            <h1>Exportación a SICORE</h1>
+        </header>
+        <div>
+            <div>
+                <form action="expoSicore">
+                    <label>Periodo</label>
+                    <input name="mes" type="number" min="1" max="12" required>
+                    <input name="año" type="number" min="2017" required>
+                    <input name="quincena" type="radio" value="1">1º Quincena
+                    <input name="quincena" type="radio" value="2">2º Quincena
+                    <input type="submit" value="Exportar">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

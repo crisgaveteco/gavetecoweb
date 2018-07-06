@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="">
+        <form action="/recupero/sellado/transa" method="GET">
+            <input type="text" name="transa" autofocus>
+            <input type="submit">
+        </form>
+        <div id="container">
+            <%if(facturaOLD!=null){
+                if(facturaOLD.fecha!=null){
+                    %><span>FECHA: <%=facturaOLD.fecha%> NRO FC: <%=facturaOLD.nroFactura%>  NETO GRAV:<%=facturaOLD.netog%>  DDJJ: <%=facturaOLD.fechaDDJJ%></span>
+                <%
+                            }
+                }
+                %>
+                <%if(factura!=null){
+                    if(factura.fecha!=null){
+                %>
+                <div id="nroFc">NUMERO DE FACTURA:  <%=factura.ptoVenta%>-<%=factura.nroFactura%></div>
+                <div id="fechaFC">FECHA  <%=factura.fecha.toString().substring(6,8)%>/<%=factura.fecha.toString().substring(4,6)%>/<%=factura.fecha.toString().substring(0,4)%></div>
+                <div>
+                    <span id="neto">NETO GRAVADO: <%=factura.netog%>  </span><span id="iva">IVA:  <%=factura.iva%></span>
+                </div>
+                <div id="sello">
+                    <span id="contenidosello">
+                        <div>b) MES Y A&NtildeO DEL F. 404</div>
+                        <div>c) MONTO IMPUTADO</div>
+                    </span>
+                    <% factura.computables.forEach(function(computable,i){%>
+                    <span id="tomas">
+                        <div class="sello<%=i%>"><%=computable.periodo.substring(4,6)%>/<%=computable.periodo.substring(2,4)%></div>
+                        <div class="sello<%=i%>"><%=computable.computable%></div>
+                    </span> <% });%>
+                </div>
+                <%}else{%>
+                <div>NO HAY REGISTROS PARA ESE COMPROBANTE</DIV>
+                    <%}}else{%>
+                <div>NO HAY REGISTROS PARA ESE COMPROBANTE</DIV>
+                    <%}%>
+        </div>
+
+    </body>
+    <link href="css/index.css" rel="stylesheet" type="text/css"/>
+</html>
