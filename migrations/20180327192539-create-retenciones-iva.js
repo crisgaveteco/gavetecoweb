@@ -12,7 +12,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       prov: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
+      },
+      cuit: {
+        type: Sequelize.STRING
       },
       fac: {
         type: Sequelize.INTEGER

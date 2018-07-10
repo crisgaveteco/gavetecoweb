@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var retenciones_iva = sequelize.define('retenciones_iva', {
     nroRet: DataTypes.INTEGER,
     prov: DataTypes.STRING,
+    cuit: DataTypes.STRING,
     fac: DataTypes.INTEGER,
     nroFactura: DataTypes.STRING,
     fechaFac: DataTypes.STRING,

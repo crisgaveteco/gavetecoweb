@@ -20,8 +20,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
-
-
 //app.use(express.static("./public"));
 //app.use('/public', express.static('public'));
 
@@ -39,7 +37,6 @@ var con = mysql.createConnection({
     password: "mysql",
     database: "recuperoweb"
 });
-
 var ComprobanteAVM = function (lineaDatos) {
     console.log(lineaDatos);
     var datos = lineaDatos.split(";");
@@ -172,7 +169,6 @@ con.connect(function (err) {
     }
     console.log("Connected!");
 });
-
 app.listen(89);
 //app.get("/", function (req, res) {
 //    getPrimerFcSinSellar(true, function (primerFC) {
@@ -298,6 +294,7 @@ var getCriterios = function (req, res, next) {
                 case "6":
                 case "9":
                 case "11":
+                    console.log("Fecha hasta antes de agregar el 30: "+ fechaHasta);
                     fechaHasta += "30";
                     break;
             }
@@ -332,6 +329,7 @@ var getRetencionesIVA = function (req, res, next) {
             return next();
         });
     } else {
+        console.log("getRetIVA return por else");
         return next();
     }
 };
@@ -371,25 +369,24 @@ var renderConsulta = function (req, res) {
         res.render("retenciones/consulta", {retenciones: req.retenciones, req: req});
     }
 };
-var getCuitProv = function (retencion) {
-    var fs = require('fs');
-    var cp = require("child_process").execFile;
+var getCuitProv = function (codProv, next) {
+    var fs2 = require('fs');
+    var cp2 = require("child_process").execFile;
     var prov = "";
     console.log("preguntando por el proveedor a AVM");
-    console.log("K:\\Wgestion1\\avm p " + retencion.prov);
-    cp("K:\\Wgestion1\\avm", ["p", retencion.prov], function (err, data) {
-        fs.readFile("C:\\AVM\\EXPO\\AVM.TXT", "latin1", function (err, data) {
+    console.log("K:\\Wgestion1\\avm p " + codProv);
+    cp2("K:\\Wgestion1\\avm", ["p", codProv], function (err, data) {
+        fs2.readFile("C:\\AVM\\EXPO\\AVM.TXT", "latin1", function (err, data) {
             if (err) {
                 console.log(err);
             }
             console.log(data);
             prov = new ProveedorAVM(data);
-            return prov.cuit;
+            console.log("Prov 399: " + prov);
+            next(prov.cuit);
         });
     });
-    console.log("Prov 399: " + prov);
 };
-
 //var getCuitProv = function (retencion) {
 //    var fs = require('fs');
 //    var cp = require("child_process").execFile;
@@ -456,9 +453,9 @@ var getLineaExpoSICORE = function (retencion) {
                 nrosFc = retencion.facs.substr(ult_ubic_guion + 1).split("/");
                 nroFc = nrosFc[0];
                 nrosFc.forEach(function (porcion) {
-                    console.log("NroFC "+nroFc+ "porcion: "+porcion);
+                    console.log("NroFC " + nroFc + "porcion: " + porcion);
 //                    nroFc=nroFc.replace(nroFc.substr(nroFc.length - porcion.length, porcion.length), porcion);
-                    nroFc=nroFc.substr(0,nroFc.length - porcion.length) + porcion;
+                    nroFc = nroFc.substr(0, nroFc.length - porcion.length) + porcion;
                 });
             } else {
                 nroFc = retencion.facs.substr(ult_ubic_guion + 1);
@@ -488,6 +485,7 @@ var getLineaExpoSICORE = function (retencion) {
 //    ivaFc = ivaFc.toFixed(2).replace(".", ",");
 //    ivaFc = " ".repeat(14 - ivaFc.length) + ivaFc;
     baseCalculo = baseCalculo.toFixed(2);
+    baseCalculo = baseCalculo.replace(".", ",");
     baseCalculo = " ".repeat(14 - baseCalculo.length) + baseCalculo;
     impRetencion = impRetencion.replace(".", ",");
     impRetencion = " ".repeat(14 - impRetencion.length) + impRetencion;
@@ -500,28 +498,57 @@ var getLineaExpoSICORE = function (retencion) {
     var acrec = "0";
     var cuitPais = " ".repeat(11);
     var cuitOrd = " ".repeat(11);
-    getCuitProv(retencion.prov, function (cuitProve) {
-        console.log("CuitProve: " + cuitProve);
-        cuit = cuitProve;
-        cuit += " ".repeat(20 - cuit.length);
-        console.log("Cuit:" + cuit);
-        retencion.cuit=cuit;
-    });
-    
+//    getCuitProv(retencion.prov, function (cuitProve) {
+//        console.log("CuitProve: " + cuitProve);
+//        cuit = cuitProve;
+//        cuit += " ".repeat(20 - cuit.length);
+//        console.log("Cuit:" + cuit);
+//        retencion.cuit=cuit;
+//    });
+    var campoCuit=  retencion.cuit.replace(/-/g,"");
+    campoCuit += " ".repeat(20 - campoCuit.length);
+    console.log("Retencion en funcion final: " + JSON.stringify(retencion.impuesto));
     return tipoFc + fechaFc + fc + totalFc + codImp +
             codReg + codOp + baseCalculo + fechaRet + codCond +
             retSuspend + impRetencion + porcExcl + fechaEmisBol +
-            tipoDocRet + cuit + nroCert + denomOrd + acrec + cuitPais +
+            tipoDocRet + campoCuit + nroCert + denomOrd + acrec + cuitPais +
             cuitOrd;
-
-
-
 };
 var pedirIvayGCIAS = function (req, res, next) {
     req.query.iva = "on";
     req.query.gcias = "on";
     return next();
 };
+//var setCuitARet = function (req, res, next) {
+//    console.log("entre a setCuit");
+//    for (var i = 0; i < req.retenciones[0].length; i++) {
+//        var retencion = req.retenciones[0][i];
+//        console.log("Retencion en foreach: " + JSON.stringify(retencion));
+//        var cuit = "hola";
+//       getCuitProv(retencion.prov, function (cuitProve) {
+//            console.log("CuitProve: " + cuitProve);
+//            cuit = cuitProve;
+//            cuit += " ".repeat(20 - cuit.length);
+//            console.log("Cuit:" + cuit);
+//       }    
+//        );
+//    }
+//    return next();
+////    req.retenciones[0].forEach(function (retencion,i) {
+////        console.log("Retencion en foreach: " + JSON.stringify(retencion));
+////        var cuit="hola";
+////        getCuitProv(retencion.prov, function (cuitProve) {
+////            console.log("CuitProve: " + cuitProve);
+////            cuit = cuitProve;
+////            cuit += " ".repeat(20 - cuit.length);
+////            console.log("Cuit:" + cuit);
+////        });
+////        this[i].cuit=cuit;
+////    },req.retenciones[0]);
+////    console.log("retenciones en salida de setCuit: " + JSON.stringify(req.retenciones));
+////    console.log("Hago el return en setCuit");
+////    return next();
+//};
 app.get("/retenciones/busqueda", getCriterios, getRetencionesIVA, getRetencionesGCIAS, renderConsulta);
 app.get("/retenciones/expoSicore", pedirIvayGCIAS, getCriterios, getRetencionesIVA, getRetencionesGCIAS, function (req, res) {
     console.log("armando archivo para SICORE");
@@ -529,24 +556,22 @@ app.get("/retenciones/expoSicore", pedirIvayGCIAS, getCriterios, getRetencionesI
     var data = "";
     console.log("Obtuve " + req.retenciones.length + " retenciones");
     req.retenciones[0].forEach(function (retencion) {
-        retencion.datos={};
+        retencion.datos = {};
         data += getLineaExpoSICORE(retencion) + "\r\n";
     });
     req.retenciones[1].forEach(function (retencion) {
-        retencion.datos={};
+        retencion.datos = {};
         data += getLineaExpoSICORE(retencion) + "\r\n";
     });
     console.log(JSON.stringify(data));
     fs.writeFile("public/files/expoSicore" + req.query.año + req.query.mes + req.query.quincena + "q.txt", data, function (err) {
         if (err)
             throw err;
-        res.download("public/files/expoSicore"+req.query.año + req.query.mes + req.query.quincena + "q.txt",function(err){
-        if(err) throw err;
+        res.download("public/files/expoSicore" + req.query.año + req.query.mes + req.query.quincena + "q.txt", function (err) {
+            if (err)
+                throw err;
+        });
     });
-    });
-    
-    
-    
 });
 app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
@@ -570,39 +595,39 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
         res.send(JSON.stringify(ret));
     });
 });
-app.post("/retenciones/emitir/prov", function (req, res) {
-    console.log(JSON.stringify(req.body.codProv));
-    var mysql = require('mysql');
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'mysql',
-        database: 'gaveteco',
-        port: 3306
-    });
-    connection.connect(function (error) {
-        if (error) {
-            throw error;
-        } else {
-            console.log('Conexion correcta.');
-        }
-    });
-    var query = connection.query("SELECT * FROM proveedor WHERE codigo = '" + req.body.codProv + "';", function (error, result) {
-        if (error) {
-            throw error;
-        } else {
-            var resultado = result;
-            if (resultado.length > 0) {
-                res.send(JSON.stringify(resultado[0]));
-            } else {
-                console.log('Registro no encontrado');
-                res.send(JSON.stringify({nombre: "No se encontró el proveedor"}));
-            }
-        }
-    }
-    );
-    connection.end();
-});
+//app.post("/retenciones/emitir/prov", function (req, res) {
+//    console.log(JSON.stringify(req.body.codProv));
+//    var mysql = require('mysql');
+//    var connection = mysql.createConnection({
+//        host: 'localhost',
+//        user: 'root',
+//        password: 'mysql',
+//        database: 'gaveteco',
+//        port: 3306
+//    });
+//    connection.connect(function (error) {
+//        if (error) {
+//            throw error;
+//        } else {
+//            console.log('Conexion correcta.');
+//        }
+//    });
+//    var query = connection.query("SELECT * FROM proveedor WHERE codigo = '" + req.body.codProv + "';", function (error, result) {
+//        if (error) {
+//            throw error;
+//        } else {
+//            var resultado = result;
+//            if (resultado.length > 0) {
+//                res.send(JSON.stringify(resultado[0]));
+//            } else {
+//                console.log('Registro no encontrado');
+//                res.send(JSON.stringify({nombre: "No se encontró el proveedor"}));
+//            }
+//        }
+//    }
+//    );
+//    connection.end();
+//});
 app.post("/avm/comprobante", function (req, res) {
     var fs = require('fs');
     var cp = require("child_process").execFile;

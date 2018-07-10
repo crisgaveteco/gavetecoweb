@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var retenciones_gcias = sequelize.define('retenciones_gcias', {
     nroRet: DataTypes.INTEGER,
     prov: DataTypes.STRING,
+    cuit: DataTypes.STRING,
     facs: DataTypes.STRING,
     fechaFac: DataTypes.DATE,
     concepto: DataTypes.STRING,

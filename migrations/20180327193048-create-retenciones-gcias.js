@@ -14,6 +14,9 @@ module.exports = {
       prov: {
         type: Sequelize.STRING
       },
+      cuit: {
+        type: Sequelize.STRING
+      },
       facs: {
         type: Sequelize.STRING
       },
