@@ -212,46 +212,46 @@ app.listen(89);
 //
 //});
 
-function setSellada(req, res, next) {
-    var querySellado = "UPDATE f404 SET sellado=true WHERE nrointerno='" + req.query.transa + "'";
-    console.log(querySellado);
-    con.query(querySellado, function (err, result) {
-        if (err) {
-            console.log("Error en linea 84: " + err);
-            throw err;
-        }
-        return next();
-    }
-    );
-}
+//function setSellada(req, res, next) {
+//    var querySellado = "UPDATE f404 SET sellado=true WHERE nrointerno='" + req.query.transa + "'";
+//    console.log(querySellado);
+//    con.query(querySellado, function (err, result) {
+//        if (err) {
+//            console.log("Error en linea 84: " + err);
+//            throw err;
+//        }
+//        return next();
+//    }
+//    );
+//}
 
 function renderPageRecupSellado(req, res) {
     res.render('recupero/index', {factura: req.factura, facturaOLD: req.facturaOLD});
 }
-function getFacturaPedida(req, res, next) {
-    var consulta = "SELECT ptoVta,nroFc,fechaFac,netog,iva,sum(computable) as computable,periodo FROM f404 where nrointerno='" + req.query.transa + "' group by periodo";
-    console.log(consulta);
-    con.query(consulta, function (err, registros, campos) {
-        if (err) {
-            console.log("Error en linea 72: " + err);
-            throw err;
-        }
-        if (registros.length > 0) {
-            var facturaResultado = new Factura(registros[0].ptoVta, registros[0].nroFc, registros[0].fechaFac, registros[0].netog, registros[0].iva);
-            registros.forEach(function (registro) {
-                facturaResultado.addComputable({computable: registro.computable, periodo: registro.periodo});
-            });
-            req.factura = facturaResultado;
-            console.log(facturaResultado);
-            return next();
-        }
-    });
-}
+//function getFacturaPedida(req, res, next) {
+//    var consulta = "SELECT ptoVta,nroFc,fechaFac,netog,iva,sum(computable) as computable,periodo FROM f404 where nrointerno='" + req.query.transa + "' group by periodo";
+//    console.log(consulta);
+//    con.query(consulta, function (err, registros, campos) {
+//        if (err) {
+//            console.log("Error en linea 72: " + err);
+//            throw err;
+//        }
+//        if (registros.length > 0) {
+//            var facturaResultado = new Factura(registros[0].ptoVta, registros[0].nroFc, registros[0].fechaFac, registros[0].netog, registros[0].iva);
+//            registros.forEach(function (registro) {
+//                facturaResultado.addComputable({computable: registro.computable, periodo: registro.periodo});
+//            });
+//            req.factura = facturaResultado;
+//            console.log(facturaResultado);
+//            return next();
+//        }
+//    });
+//}
 function renderPageEmitirRetenciones(req, res) {
     res.render('index', {factura: req.factura, facturaOLD: req.facturaOLD});
 }
-app.get("/recupero/sellado", getPrimerFcSinSellar, renderPageRecupSellado);
-app.get("/recupero/sellado/transa", getFacturaPedida, setSellada, getPrimerFcSinSellar, renderPageRecupSellado);
+//app.get("/recupero/sellado", getPrimerFcSinSellar, renderPageRecupSellado);
+//app.get("/recupero/sellado/transa", getFacturaPedida, setSellada, getPrimerFcSinSellar, renderPageRecupSellado);
 app.get("/retenciones/emitir", function (req, res) {
     res.render('retenciones/emitirRetenciones');
 });
@@ -429,7 +429,7 @@ var getLineaExpoSICORE = function (retencion) {
             var nroFc = retencion.nroFactura.substr(ult_ubic_guion + 1);
             fc += "0".repeat(4 - ptoVta.length) + ptoVta + "0".repeat(8 - nroFc.length) + nroFc + " ".repeat(4);
             codImp = "767";
-            if (retencion.regimen == "499") {
+            if (retencion.regimen === "499") {
                 codCond = "01";
             }
             impRetencion = parseFloat(retencion.ret_importe).toFixed(2);
@@ -589,7 +589,7 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
     var retenciones = "";
     retGCIAS.findAll({where:
                 {ret_fecha: {$and: [{$gte: new Date("2018-06-01"), $lte: new Date("2018-06-30")}]}},
-        order: [['id', 'DESC']],
+        order: [['id', 'DESC']]
     }).then(function (ret) {
         console.log("Retenciones GCIAS encontradas: " + ret);
         res.send(JSON.stringify(ret));
@@ -661,6 +661,7 @@ app.post("/avm/proveedor", function (req, res) {
             if (err) {
                 console.log(err);
             }
+            var provDB = db.proveedor;
             console.log(data);
             var prov = new ProveedorAVM(data);
             console.log(JSON.stringify(prov));
