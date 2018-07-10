@@ -31,12 +31,12 @@ mimeTypes = {
     "js": "text/javascript",
     "css": "text/css"
 };
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "mysql",
-    database: "recuperoweb"
-});
+//var con = mysql.createConnection({
+//    host: "localhost",
+//    user: "root",
+//    password: "mysql",
+//    database: "recuperoweb"
+//});
 var ComprobanteAVM = function (lineaDatos) {
     console.log(lineaDatos);
     var datos = lineaDatos.split(";");
