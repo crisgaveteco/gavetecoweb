@@ -677,6 +677,7 @@ app.post("/retenciones/emitir/iva", function (req, res) {
     var nroDeRetencion = "";
     RetencionIva.create(
             {prov: req.body.proveedor.codigo,
+                cuit: req.body.proveedor.cuit,
                 fac: 0,
                 nroFactura: req.body.factura.ptoVta + "-" + req.body.factura.nroFc,
                 fechaFac: req.body.factura.fechaFc,
@@ -706,6 +707,7 @@ app.post("/retenciones/emitir/gcias", function (req, res) {
     console.log(req.body.factura.fechaFc);
     RetencionGCIAS.create(
             {prov: req.body.proveedor.codigo,
+                cuit: req.body.proveedor.cuit,
                 facs: req.body.factura.nrosFc,
                 fechaFac: req.body.factura.fechaFc,
                 concepto: req.body.retencion.concepto,
