@@ -162,13 +162,13 @@ function getPrimerFcSinSellar(req, res, next) {
     });
 }
 
-con.connect(function (err) {
-    if (err) {
-        console.log("Error en linea 52: " + err);
-        throw err;
-    }
-    console.log("Connected!");
-});
+//con.connect(function (err) {
+//    if (err) {
+//        console.log("Error en linea 52: " + err);
+//        throw err;
+//    }
+//    console.log("Connected!");
+//});
 app.listen(89);
 //app.get("/", function (req, res) {
 //    getPrimerFcSinSellar(true, function (primerFC) {
