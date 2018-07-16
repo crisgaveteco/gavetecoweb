@@ -268,7 +268,7 @@ var getCriterios = function (req, res, next) {
     if (req.query.quincena) {
         var fechaDesde = req.query.año + "-" + req.query.mes + "-";
         var fechaHasta = req.query.año + "-" + req.query.mes + "-";
-        if (req.query.quincena == "1") {
+        if (req.query.quincena === "1") {
             fechaDesde += "01";
             fechaHasta += "15";
         } else {
@@ -300,7 +300,7 @@ var getCriterios = function (req, res, next) {
             }
         }
         console.log("Aplicando quincena: " + req.query.quincena);
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date(fechaDesde), $lte: new Date(fechaHasta)}]}});
+        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-05-31 21:00:00"), $lte: new Date("2018-06-30 20:59:00")}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
@@ -466,10 +466,14 @@ var getLineaExpoSICORE = function (retencion) {
             codCond = "01";
             netoFc = parseFloat(retencion.neto);
             ivaFc = parseFloat(retencion.deduc);
+            console.log("Retencion "+retencion.id+" campo ret:ant:"+retencion.ret_ant);
             if (retencion.ret_ant) {
                 impRetencion = (parseFloat(retencion.retencion) - parseFloat(retencion.ret_ant)).toFixed(2);
             } else {
                 impRetencion = parseFloat(retencion.retencion).toFixed(2);
+            }
+            if (retencion.importeFijo) {
+                impRetencion = (parseFloat(impRetencion) + parseFloat(retencion.importeFijo)).toFixed(2);
             }
             baseCalculo = netoFc;
             break;
@@ -719,9 +723,9 @@ app.post("/retenciones/emitir/gcias", function (req, res) {
                 deduc: req.body.retencion.cuadro.actual.deduc,
                 neto: req.body.retencion.cuadro.actual.neto,
                 minimo: req.body.retencion.minimo,
-                fijo: req.body.retencion.fijo,
+                fijo: req.body.retencion.importeFijo,
                 retencion: req.body.retencion.importe,
-                ret_ant: req.body.retencion.imp_ant,
+                ret_ant: req.body.retencion.importeAnt,
                 regimen: req.body.retencion.regimen,
                 ret_fecha: req.body.retencion.fechaRet,
                 emitida: false,

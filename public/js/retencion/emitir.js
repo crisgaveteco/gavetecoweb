@@ -4,19 +4,31 @@
  * and open the template in the editor.
  */
 var proveedor = {};
-var cuadroHonorariosGCIAS = [{min: 0, max: 2000, fijo: 0, porc: 10, exced: 0},
-    {min: 2000, max: 4000, fijo: 200, porc: 14, exced: 2000},
-    {min: 4000, max: 8000, fijo: 480, porc: 18, exced: 4000},
-    {min: 8000, max: 14000, fijo: 1200, porc: 22, exced: 8000},
-    {min: 14000, max: 24000, fijo: 2520, porc: 26, exced: 14000},
-    {min: 24000, max: 40000, fijo: 5120, porc: 28, exced: 24000},
-    {min: 40000, max: 99999999, fijo: 9600, porc: 30, exced: 40000}];
-var cuadroGcias = [{concepto: "Bienes", importe: 100000, porc: 2},
-    {concepto: "Servicios", importe: 30000, porc: 2},
-    {concepto: "Alquileres", importe: 5000, porc: 6},
-    {concepto: "Honorarios", importe: 7500, porc: 2, tabla: cuadroHonorariosGCIAS},
-    {concepto: "Fletes", importe: 30000, porc: 2}];
 
+//var cuadroHonorariosGCIAS = [{min: 0, max: 2000, fijo: 0, porc: 10, exced: 0},
+//    {min: 2000, max: 4000, fijo: 200, porc: 14, exced: 2000},
+//    {min: 4000, max: 8000, fijo: 480, porc: 18, exced: 4000},
+//    {min: 8000, max: 14000, fijo: 1200, porc: 22, exced: 8000},
+//    {min: 14000, max: 24000, fijo: 2520, porc: 26, exced: 14000},
+//    {min: 24000, max: 40000, fijo: 5120, porc: 28, exced: 24000},
+//    {min: 40000, max: 99999999, fijo: 9600, porc: 30, exced: 40000}];
+
+var cuadroHonorariosGCIAS = [{min: 0, max: 5000, fijo: 0, porc: 5, exced: 0},
+    {min: 5000, max: 10000, fijo: 250, porc: 9, exced: 5000},
+    {min: 10000, max: 15000, fijo: 700, porc: 12, exced: 10000},
+    {min: 15000, max: 20000, fijo: 1300, porc: 15, exced: 15000},
+    {min: 20000, max: 30000, fijo: 2050, porc: 19, exced: 20000},
+    {min: 30000, max: 40000, fijo: 3950, porc: 23, exced: 30000},
+    {min: 40000, max: 60000, fijo: 6250, porc: 27, exced: 40000},
+    {min: 60000, max: 99999999, fijo: 11650, porc: 31, exced: 60000}];
+
+var cuadroGcias = [{concepto: "Bienes", importe: 142400, porc: 2},
+    {concepto: "Servicios", importe: 42700, porc: 2},
+    {concepto: "Alquileres", importe: 7120, porc: 6},
+    {concepto: "Honorarios", importe: 10700, porc: 2, tabla: cuadroHonorariosGCIAS},
+    {concepto: "Fletes", importe: 42700, porc: 2}];
+
+var minimaRetGCIAS=150;
 
 function sumarImportes(selector) {
     var n = 1;
@@ -297,6 +309,7 @@ function calcularRetGCIAS() {
     if ($("#importeARetGcias").val() === "" || parseFloat($("#importeARetGcias").val()) <= 0) {
         $("#emitirRetGcias").prop("disabled", true);
     } else {
+        if(parseFloat($("#importeARetGcias").val()) <= minimaRetGCIAS)
         $("#emitirRetGcias").prop("disabled", false);
     }
 
