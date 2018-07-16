@@ -581,7 +581,7 @@ app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
     var retenciones = "";
     retIva.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-06-01"), $lte: new Date("2018-06-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-07-01"), $lte: new Date("2018-07-31")}]}},
         order: [['id', 'DESC']]
     }).then(function (retIVa) {
         console.log("Retenciones encontradas: " + retIVa);
@@ -592,7 +592,7 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
     var retGCIAS = db.retenciones_gcias;
     var retenciones = "";
     retGCIAS.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-06-01"), $lte: new Date("2018-06-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-07-01"), $lte: new Date("2018-07-31")}]}},
         order: [['id', 'DESC']]
     }).then(function (ret) {
         console.log("Retenciones GCIAS encontradas: " + ret);
