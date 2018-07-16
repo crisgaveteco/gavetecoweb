@@ -309,7 +309,7 @@ function calcularRetGCIAS() {
     if ($("#importeARetGcias").val() === "" || parseFloat($("#importeARetGcias").val()) <= 0) {
         $("#emitirRetGcias").prop("disabled", true);
     } else {
-        if(parseFloat($("#importeARetGcias").val()) => minimaRetGCIAS)
+        if(parseFloat($("#importeARetGcias").val()) >= minimaRetGCIAS)
         $("#emitirRetGcias").prop("disabled", false);
     }
 
