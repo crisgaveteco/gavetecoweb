@@ -467,12 +467,12 @@ var getLineaExpoSICORE = function (retencion) {
             netoFc = parseFloat(retencion.neto);
             ivaFc = parseFloat(retencion.deduc);
             console.log("Retencion "+retencion.id+" campo ret:ant:"+retencion.ret_ant);
-            impRetencion = parseFloat(retencion.retencion).toFixed(2);
+            impRetencion = parseFloat(retencion.retencion);
             if (retencion.ret_ant) 
-                impRetencion -=  parseFloat(retencion.ret_ant).toFixed(2);
+                impRetencion -=  parseFloat(retencion.ret_ant);
             
             if (retencion.importeFijo) {
-                impRetencion += parseFloat(retencion.importeFijo).toFixed(2);
+                impRetencion += parseFloat(retencion.importeFijo);
             }
             baseCalculo = netoFc;
             break;
@@ -490,7 +490,7 @@ var getLineaExpoSICORE = function (retencion) {
     baseCalculo = baseCalculo.toFixed(2);
     baseCalculo = baseCalculo.replace(".", ",");
     baseCalculo = " ".repeat(14 - baseCalculo.length) + baseCalculo;
-    impRetencion = impRetencion.replace(".", ",");
+    impRetencion = impRetencion.toFixed(2).replace(".", ",");
     impRetencion = " ".repeat(14 - impRetencion.length) + impRetencion;
     var porcExcl = "  0,00";
     var fechaEmisBol = " ".repeat(10);
