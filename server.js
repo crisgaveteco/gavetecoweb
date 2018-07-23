@@ -432,7 +432,7 @@ var getLineaExpoSICORE = function (retencion) {
             if (retencion.regimen === "499") {
                 codCond = "01";
             }
-            impRetencion = parseFloat(retencion.ret_importe).toFixed(2);
+            impRetencion = parseFloat(retencion.ret_importe);
             netoFc = parseFloat(retencion.netoFc);
             ivaFc = parseFloat(retencion.ivaFc);
             baseCalculo = ivaFc;
@@ -491,7 +491,8 @@ var getLineaExpoSICORE = function (retencion) {
     baseCalculo = baseCalculo.replace(".", ",");
     baseCalculo = " ".repeat(14 - baseCalculo.length) + baseCalculo;
     console.log("Importe de la retencion: "+impRetencion);
-    impRetencion = impRetencion.toFixed(2).replace(".", ",");
+    impRetencion = impRetencion.toFixed(2);
+    impRetencion = impRetencion.replace(".", ",");
     impRetencion = " ".repeat(14 - impRetencion.length) + impRetencion;
     var porcExcl = "  0,00";
     var fechaEmisBol = " ".repeat(10);
