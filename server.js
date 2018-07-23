@@ -471,8 +471,8 @@ var getLineaExpoSICORE = function (retencion) {
             if (retencion.ret_ant) 
                 impRetencion -=  parseFloat(retencion.ret_ant);
             
-            if (retencion.importeFijo) {
-                impRetencion += parseFloat(retencion.importeFijo);
+            if (retencion.fijo) {
+                impRetencion += parseFloat(retencion.fijo);
             }
             baseCalculo = netoFc;
             break;
