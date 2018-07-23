@@ -467,13 +467,12 @@ var getLineaExpoSICORE = function (retencion) {
             netoFc = parseFloat(retencion.neto);
             ivaFc = parseFloat(retencion.deduc);
             console.log("Retencion "+retencion.id+" campo ret:ant:"+retencion.ret_ant);
-            if (retencion.ret_ant) {
-                impRetencion = (parseFloat(retencion.retencion) - parseFloat(retencion.ret_ant)).toFixed(2);
-            } else {
-                impRetencion = parseFloat(retencion.retencion).toFixed(2);
-            }
+            impRetencion = parseFloat(retencion.retencion).toFixed(2);
+            if (retencion.ret_ant) 
+                impRetencion -=  parseFloat(retencion.ret_ant).toFixed(2);
+            
             if (retencion.importeFijo) {
-                impRetencion = (parseFloat(impRetencion) + parseFloat(retencion.importeFijo)).toFixed(2);
+                impRetencion += parseFloat(retencion.importeFijo).toFixed(2);
             }
             baseCalculo = netoFc;
             break;
