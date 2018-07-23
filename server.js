@@ -490,6 +490,7 @@ var getLineaExpoSICORE = function (retencion) {
     baseCalculo = baseCalculo.toFixed(2);
     baseCalculo = baseCalculo.replace(".", ",");
     baseCalculo = " ".repeat(14 - baseCalculo.length) + baseCalculo;
+    console.log("Importe de la retencion: "+impRetencion);
     impRetencion = impRetencion.toFixed(2).replace(".", ",");
     impRetencion = " ".repeat(14 - impRetencion.length) + impRetencion;
     var porcExcl = "  0,00";
