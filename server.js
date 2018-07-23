@@ -312,7 +312,7 @@ var getRetencionesIVA = function (req, res, next) {
         console.log("Entré a if IVA");
         retIva.findAll({where:
                     {$and: req.criterios},
-            order: [['id', 'DESC']]
+            order: [['id', 'ASC']]
         }).then(function (retIVa) {
             console.log("Retenciones FILTRADAS IVA: " + retIVa);
             retIVa.forEach(function (ret, i) {
@@ -340,7 +340,7 @@ var getRetencionesGCIAS = function (req, res, next) {
         console.log("Entré a if GCIAS");
         retGcias.findAll({where:
                     {$and: req.criterios},
-            order: [['id', 'DESC']]
+            order: [['id', 'ASC']]
         }).then(function (retGcias) {
             console.log("Retenciones FILTRADAS GCIAS: " + retGcias);
             retGcias.forEach(function (ret, i) {
