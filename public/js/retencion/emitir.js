@@ -277,7 +277,11 @@ function acumularEnGcias(idFc) {
 }
 
 function setPorcYMinimoGCIAS() {
-    $("#minimoGCIAS").val(cuadroGcias[$("#factura1 .conceptoFc option:selected").val()].importe);
+    if($(".fcM").prop("checked")){
+        $("#minimoGCIAS").val("0");
+    }else{
+        $("#minimoGCIAS").val(cuadroGcias[$("#factura1 .conceptoFc option:selected").val()].importe);
+    }
     $("#porcRetGCIAS").val(cuadroGcias[$("#factura1 .conceptoFc option:selected").val()].porc);
     $("#subtotalGCIAS").val(parseFloat(($("#netoTotalGCIAS").val()) - parseFloat($("#minimoGCIAS").val())).toFixed(2));
     if ($("#factura1 .conceptoFc option:selected").val() !== "3") {
@@ -309,7 +313,7 @@ function calcularRetGCIAS() {
     if ($("#importeARetGcias").val() === "" || parseFloat($("#importeARetGcias").val()) <= 0) {
         $("#emitirRetGcias").prop("disabled", true);
     } else {
-        if(parseFloat($("#importeARetGcias").val()) >= minimaRetGCIAS)
+        if(parseFloat($("#importeARetGcias").val()) >= minimaRetGCIAS||$(".fcM")[0].prop("checked"))
         $("#emitirRetGcias").prop("disabled", false);
     }
 
