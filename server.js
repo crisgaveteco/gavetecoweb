@@ -266,6 +266,7 @@ var getCriterios = function (req, res, next) {
         req.criterios.push({prov: req.query.prov});
     }
     if (req.query.quincena) {
+        console.log(process.env.TZ);
         var fechaDesde = req.query.año + "-" + req.query.mes + "-";
         var fechaHasta = req.query.año + "-" + req.query.mes + "-";
         if (req.query.quincena === "1") {
