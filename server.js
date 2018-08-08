@@ -294,7 +294,7 @@ var getCriterios = function (req, res, next) {
                 case "6":
                 case "9":
                 case "11":
-                    console.log("Fecha hasta antes de agregar el 30: "+ fechaHasta);
+                    //console.log("Fecha hasta antes de agregar el 30: "+ fechaHasta);
                     fechaHasta += "30";
                     break;
             }
@@ -314,7 +314,7 @@ var getRetencionesIVA = function (req, res, next) {
                     {$and: req.criterios},
             order: [['id', 'ASC']]
         }).then(function (retIVa) {
-            console.log("Retenciones FILTRADAS IVA: " + retIVa);
+            //console.log("Retenciones FILTRADAS IVA: " + retIVa);
             retIVa.forEach(function (ret, i) {
                 ret.impuesto = "IVA";
             });
@@ -325,7 +325,7 @@ var getRetencionesIVA = function (req, res, next) {
 //
 //            }
             req.retenciones.push(retIVa);
-            console.log("retIva: " + req.retenciones);
+            //console.log("retIva: " + req.retenciones);
             return next();
         });
     } else {
@@ -337,12 +337,12 @@ var getRetencionesGCIAS = function (req, res, next) {
     console.log("llegue getRetencionesGCIAS");
     var retGcias = db.retenciones_gcias;
     if (req.query.gcias) {
-        console.log("Entré a if GCIAS");
+        //console.log("Entré a if GCIAS");
         retGcias.findAll({where:
                     {$and: req.criterios},
             order: [['id', 'ASC']]
         }).then(function (retGcias) {
-            console.log("Retenciones FILTRADAS GCIAS: " + retGcias);
+            //console.log("Retenciones FILTRADAS GCIAS: " + retGcias);
             retGcias.forEach(function (ret, i) {
                 ret.impuesto = "GCIAS";
             });
@@ -352,7 +352,7 @@ var getRetencionesGCIAS = function (req, res, next) {
 //                res.render("retenciones/consulta", {retenciones: "nada"});
 //            }
             req.retenciones.push(retGcias);
-            console.log("retGcias: " + req.retenciones);
+            //console.log("retGcias: " + req.retenciones);
             return next();
         });
     } else {
