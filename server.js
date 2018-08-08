@@ -266,7 +266,6 @@ var getCriterios = function (req, res, next) {
         req.criterios.push({prov: req.query.prov});
     }
     if (req.query.quincena) {
-        console.log("TimeZone "+process.env.TZ);
         var fechaDesde = req.query.año + "-" + req.query.mes + "-";
         var fechaHasta = req.query.año + "-" + req.query.mes + "-";
         if (req.query.quincena === "1") {
@@ -301,7 +300,7 @@ var getCriterios = function (req, res, next) {
             }
         }
         console.log("Aplicando quincena: " + req.query.quincena);
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date(fechaDesde).toUTCString(), $lte: new Date(fechaHasta+" 23:59:59")}]}});
+        req.criterios.push({ret_fecha: {$and: [{$gte: new Date(fechaDesde).toUTCString(), $lte: new Date(fechaHasta+" 23:59:59").toUTCString()}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
