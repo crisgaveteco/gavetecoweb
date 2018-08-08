@@ -300,7 +300,7 @@ var getCriterios = function (req, res, next) {
             }
         }
         console.log("Aplicando quincena: " + req.query.quincena);
-        console.log("Fecha desde: "+fechaDesde+" Fecha hasta: "+fechaHasta);
+        console.log("Fecha desde: "+new Date(fechaDesde).toLocaleString()+" Fecha hasta: "+new Date(fechaHasta).toUTCString());
         req.criterios.push({ret_fecha: {$and: [{$gte: new Date(fechaDesde).toLocaleString(), $lte: new Date(fechaHasta+" 23:59:59").toLocaleString()}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
