@@ -168,7 +168,7 @@ function agregarRetIva(idFc){
             var fechaFcISO = $("#factura" + id + " .fechaFc").val();
             var fechaFcARG = fechaFcISO.substr(8, 2) + "/" + fechaFcISO.substr(5, 2) + "/" + fechaFcISO.substr(0, 4);
             var regimen = "";
-            if ($("#factura" + id + " .fcM").attr("checked")) {
+            if ($("#factura" + id + " .fcM").prop("checked")) {
                 regimen = "499";
             } else {
                 regimen = "214";
