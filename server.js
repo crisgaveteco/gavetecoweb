@@ -301,7 +301,7 @@ var getCriterios = function (req, res, next) {
         }
         console.log("Aplicando quincena: " + req.query.quincena);
         console.log("Fecha desde: "+new Date(fechaDesde).toLocaleString()+" Fecha hasta: "+new Date(fechaHasta).toUTCString());
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-06-30 21:59:59"), $lte: new Date("2018-07-31 19:59:59")}]}});
+        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-07-31 21:59:59"), $lte: new Date("2018-08-31 20:59:59")}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
