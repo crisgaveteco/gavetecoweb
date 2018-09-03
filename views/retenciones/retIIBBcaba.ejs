@@ -14,7 +14,10 @@
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
     var porcRet = req.retencion.porcRet;
-    var regimen = req.retencion.regimen;*/
+    var regimen = req.retencion.regimen;
+    var hoy=new Date(req.retencion.fechaRet);
+    var iva = parseFloat(req.factura.ivaFc).toFixed(2);
+    var factura = req.factura.ptoVta+"-"+req.factura.nroFc;*/
     var nroRet = "00004701";
     var razonSoc = "CONSORCIO PORTUARIO REGIONAL MDP";
     var cuit = "30-70738200-3";
@@ -23,12 +26,12 @@
     var neto = "3,110.40";
     var alicuota = "2.50";
     var coef = "1.0000";
-    var iva = parseFloat(req.factura.ivaFc).toFixed(2);
+    var iva = parseFloat("1,124.55").toFixed(2);
     var impRet = "77.76";
     var domicilio = "B/P Marlin 404 Mar del Plata , Bs.As.";
-    var factura = req.factura.ptoVta+"-"+req.factura.nroFc;
+    var factura = "0002"+"-"+"00001345";
     var concepto = "SERVICIO A LAS CARGAS";
-    var hoy=new Date(req.retencion.fechaRet);
+    var hoy=new Date();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
     var porcRet = req.retencion.porcRet;
