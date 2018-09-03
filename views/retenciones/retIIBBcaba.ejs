@@ -17,7 +17,9 @@
     var regimen = req.retencion.regimen;
     var hoy=new Date(req.retencion.fechaRet);
     var iva = parseFloat(req.factura.ivaFc).toFixed(2);
-    var factura = req.factura.ptoVta+"-"+req.factura.nroFc;*/
+    var factura = req.factura.ptoVta+"-"+req.factura.nroFc;
+    var porcRet = req.retencion.porcRet;
+    var regimen = req.retencion.regimen;*/
     var nroRet = "00004701";
     var razonSoc = "CONSORCIO PORTUARIO REGIONAL MDP";
     var cuit = "30-70738200-3";
@@ -26,7 +28,7 @@
     var neto = "3,110.40";
     var alicuota = "2.50";
     var coef = "1.0000";
-    var iva = parseFloat("1,124.55").toFixed(2);
+    var iva = "1.124,55";
     var impRet = "77.76";
     var domicilio = "B/P Marlin 404 Mar del Plata , Bs.As.";
     var factura = "0002"+"-"+"00001345";
@@ -34,15 +36,18 @@
     var hoy=new Date();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
-    var porcRet = req.retencion.porcRet;
-    var regimen = req.retencion.regimen;
+    var porcRet = "50";
+    var regimen = "";
+    var IIBBn="30-70738200-3";
+    var aliIBARBA="0.75";
+    var coefBA="1.0000";
 %>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Ret.IVA FC<%=factura%></title>
-        <link href="/css/retenciones/comprobante.css" rel="stylesheet" type="text/css"/>
+        <link href="/css/retenciones/comprobanteARBA.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <form action="/">
@@ -63,13 +68,11 @@
                 <div id="cuerpo">
                     <div id="titulo">Constancia de Retencion IVA R.G. 18 AFIP</div>
                     <div class="lineaDatos" id="lineaProv"><label>Proveedor: </label><div id="provSpan" class="datoRet"><%=razonSoc%></div><label>C.U.I.T: </label><div  class="datoRet" id="cuitSpan"><%=cuit%></div></div>
-                    <div class="lineaDatos" id="lineaDom"><label>Domicilio: </label><span id="domSpan" class="datoRet"><%=domicilio%></span></div>
-                    <div class="lineaDatos" id="lineaFac"><label>Factura: </label><span class="datoRet" id="facSpan"><%=factura%></span><label>Fecha: </label><span class="datoRet" id="fechaSpan"><%=fechaFc%></span></div>
-                    <div class="lineaDatos" id="lineaConc"><label>Concepto por el cual se practico la retencion:</label><span class="datoRet" id="concSpan"><%=concepto%></span></div>
-                    <div class="lineaDatos" id="lineaNeto"><label>Importe Neto $:</label><span class="datoRet" id="netoSpan"><%=neto%></span></div>
-                    <div class="lineaDatos" id="lineaIva"><label>Importe IVA: $</label><span class="datoRet" id="ivaSpan"><%=iva%></span></div>
-                    <div class="lineaDatos" id="lineaImpRet"><label>Retencion: </label><span class="datoRet" id="porcSpan"><%=porcRet%></span><label>% $</label><span class="datoRet" id="impRetSpan"><%=impRet%></span></div>
-                    <div class="lineaDatos" id="lineaRegimen"><label>Regimen: </label><span  class="datoRet" id="regimenSpan"><%=regimen%></span></div>
+                    <div class="lineaDatos" id="lineaDom"><label>Domicilio: </label><span id="domSpan" class="datoRet"><%=domicilio%></span><label>IIBB Nº: </label><span id="IIBBn" class="datoRet IIBBn"><%=IIBBn%></span></div>
+                    <div class="lineaDatos" id="lineaFac"><label>Factura Nº: </label><span class="datoRet" id="facSpan"><%=factura%></span><label>Fecha: </label><span class="datoRet" id="fechaSpan"><%=fechaFc%></span></div>
+                    <div class="lineaDatos" id="lineaConc"><label>Concepto: </label><span class="datoRet" id="concSpan"><%=concepto%></span></div>
+                    <div class="lineaDatos" id="lineaNeto"><label>Base Imponible $:</label><span class="datoRet" id="netoSpan"><%=neto%></span><label>Alicuota $:</label><span class="datoRet" id="aliIBARBA"><%=aliIBARBA%></span></div>
+                    <div class="lineaDatos" id="lineaImpRet"><label>Importe retenido $: </label><span class="datoRet" id="impRetSpan"><%=impRet%></span><label>Coeficiente BA $: </label><span class="datoRet" id="coefBASpan"><%=coefBA%></span></div>
                     <div class="lineaDatos" id="lineaDatosFinal"><label>Buenos Aires: </label><span  class="datoRet" id="fechaRetSpan"><%=fechaRet%></span></div>
                 </div>
             </div>

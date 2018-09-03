@@ -586,7 +586,7 @@ app.post("/retenciones/IvaQuincena", function (req, res) {
                 {ret_fecha: {$and: [{$gte: new Date("2018-08-16"), $lte: new Date("2018-08-31")}]}},
         order: [['id', 'DESC']]
     }).then(function (retIVa) {
-        console.log("Retenciones encontradas: " + retIVa);
+        //console.log("Retenciones encontradas: " + retIVa);
         res.send(JSON.stringify(retIVa));
     });
 });
@@ -597,7 +597,7 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
                 {ret_fecha: {$and: [{$gte: new Date("2018-08-16"), $lte: new Date("2018-08-31")}]}},
         order: [['id', 'DESC']]
     }).then(function (ret) {
-        console.log("Retenciones GCIAS encontradas: " + ret);
+        //console.log("Retenciones GCIAS encontradas: " + ret);
         res.send(JSON.stringify(ret));
     });
 });
@@ -743,40 +743,41 @@ app.post("/retenciones/emitir/gcias", function (req, res) {
     });
 });
 app.get("/retenciones/emitir/IIBBcaba", function (req, res) {
-    console.log(JSON.stringify(req.body));
+    //console.log(JSON.stringify(req.body));
     var RetencionGCIAS = db.retenciones_gcias;
     db.sequelize.sync();
     var nroDeRetencion = "";
-    console.log(req.body.factura.fechaFc);
-    RetencionGCIAS.create(
-            {prov: req.body.proveedor.codigo,
-                cuit: req.body.proveedor.cuit,
-                facs: req.body.factura.nrosFc,
-                fechaFac: req.body.factura.fechaFc,
-                concepto: req.body.retencion.concepto,
-                bruto_ant: req.body.retencion.cuadro.anteriores.bruto,
-                deduc_ant: req.body.retencion.cuadro.anteriores.deduc,
-                neto_ant: req.body.retencion.cuadro.anteriores.neto,
-                bruto: req.body.retencion.cuadro.actual.bruto,
-                deduc: req.body.retencion.cuadro.actual.deduc,
-                neto: req.body.retencion.cuadro.actual.neto,
-                minimo: req.body.retencion.minimo,
-                fijo: req.body.retencion.importeFijo,
-                retencion: req.body.retencion.importe,
-                ret_ant: req.body.retencion.importeAnt,
-                regimen: req.body.retencion.regimen,
-                ret_fecha: req.body.retencion.fechaRet,
-                emitida: false,
-                anulada: false,
-                pago: 0
-            }).then(function (registro) {
-        console.log(registro.id + " el el then");
-        nroDeRetencion = registro.id;
-        console.log(nroDeRetencion + " variable");
-        res.set("encoding", "latin1");
-        res.render("./retenciones/retIIBBcaba", {req: req.body, nroRet: nroDeRetencion});
-        res.end();
-    });
+    //console.log(req.body.factura.fechaFc);
+//    RetencionGCIAS.create(
+//            {prov: req.body.proveedor.codigo,
+//                cuit: req.body.proveedor.cuit,
+//                facs: req.body.factura.nrosFc,
+//                fechaFac: req.body.factura.fechaFc,
+//                concepto: req.body.retencion.concepto,
+//                bruto_ant: req.body.retencion.cuadro.anteriores.bruto,
+//                deduc_ant: req.body.retencion.cuadro.anteriores.deduc,
+//                neto_ant: req.body.retencion.cuadro.anteriores.neto,
+//                bruto: req.body.retencion.cuadro.actual.bruto,
+//                deduc: req.body.retencion.cuadro.actual.deduc,
+//                neto: req.body.retencion.cuadro.actual.neto,
+//                minimo: req.body.retencion.minimo,
+//                fijo: req.body.retencion.importeFijo,
+//                retencion: req.body.retencion.importe,
+//                ret_ant: req.body.retencion.importeAnt,
+//                regimen: req.body.retencion.regimen,
+//                ret_fecha: req.body.retencion.fechaRet,
+//                emitida: false,
+//                anulada: false,
+//                pago: 0
+//            }).then(function (registro) {
+//        console.log(registro.id + " el el then");
+//        nroDeRetencion = registro.id;
+//        console.log(nroDeRetencion + " variable");
+//        res.set("encoding", "latin1");
+//        res.render("./retenciones/retIIBBcaba", {req: req.body, nroRet: nroDeRetencion});
+//        res.end();
+//    });
+    res.render("./retenciones/retIIBBcaba", {req: req.body, nroRet: nroDeRetencion});
 });
 app.get("/proveedores/actualizarExclusiones", function (req, res) {
     var https = require("https");
