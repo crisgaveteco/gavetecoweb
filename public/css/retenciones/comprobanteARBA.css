@@ -114,11 +114,11 @@ and open the template in the editor.
     margin-top: 51px;
 }
 #lineaConc{
-    margin-top : 31px;
+    margin-top : 25px;
     margin-bottom: 8px;
 }
 #lineaNeto{
-    margin-top:18px;
+    margin-top:20px;
 }
 #lineaIva{
     margin-top: 19px;
@@ -133,7 +133,7 @@ and open the template in the editor.
     margin-top: 26px;
 }
 #lineaDatosFinal{
-    margin-top: 48px;
+    margin-top: 55px;
 }
 .lineaDatos span{
     text-align: center;
