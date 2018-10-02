@@ -5,14 +5,15 @@
  */
 
 $(document).ready(function () {
+    refrescarTablas();
+    setInterval(refrescarTablas, 20000);
+});
+
+function refrescarTablas(){
     refrescarTablaIva();
     refrescarTablaGCIAS();
     refrescarTablaARBA();
-    setInterval(refrescarTablaIva, 20000);
-    setInterval(refrescarTablaGCIAS, 20000);
-    setInterval(refrescarTablaARBA, 20000);
-});
-
+}
 function agregarFilaRetencion(retencion,impuesto){
     var importeRetencion="";
     var facturas;
@@ -54,7 +55,7 @@ function refrescarTablaIva() {
                 $("#resumenIva tbody").html("");
                 var rets=JSON.parse(data);
                 rets.forEach(function(retencion){
-                    totalQuincena+=retencion.importe;
+                    totalQuincena+=retencion.ret_importe;
                     agregarFilaRetencion(retencion,"Iva");
                 });
                 $("#totalQuincenaIva").html(parseFloat(totalQuincena.toFixed(2)).toLocaleString("en-US",{minimumFractionDigits: 2}));
@@ -104,7 +105,7 @@ function refrescarTablaARBA() {
             cache: false,
             async: true,
             success: function (data) {
-                $("#resumenIva tbody").html("");
+                $("#resumenARBA tbody").html("");
                 var rets=JSON.parse(data);
                 rets.forEach(function(retencion){
                     totalQuincena+=retencion.importe;
