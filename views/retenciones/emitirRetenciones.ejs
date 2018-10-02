@@ -60,11 +60,13 @@
                 <div class="factura" id="factura1">
                     <input class="fcNroInterno datosFc" type="number" id="fcNroInterno1" name="fcNroInterno1" tabindex="2">
                     <input class="fcM datosFc" type="checkbox" name="fcM1" tabindex="-1">FC M
+                    <input class="tipoCompFc datosFc" type="text" name="tipoCompFC1" tabindex="-2">
                     <input class="ptoVtaFc datosFc" type="number" name="ptoVta1" placeholder="PtoVta" min=0 max=9999 step=1 pattern="[0-9]{1,4}" required>
                     -
                     <input class="nroFc datosFc" type="number" name="nroFC1" placeholder="Numero Fac" min=0 max=99999999 step=1 pattern="[0-9]{1,8}" required>
                     <input class="netoFc datosFc" type="number" name="netoG1" placeholder="Neto Gravado" step=0.01 pattern="^\d+(\.|\,)\d{2}$" required>
                     <input class="ivaFc datosFc" type="number" name="iva1" placeholder="Iva" step=0.01 pattern="^\d+(\.|\,)\d{2}$" required>
+                    <input class="totalFc datosFc" type="number" name="total1" step=0.01 pattern="^\d+(\.|\,)\d{2}$" hidden>
                     <input class="fechaFc datosFc" type="date" name="fechaFc1" required>
                     <select class="conceptoFc datosFc" id="conceptoFc" name="concepto1" required>
                         <option value="" disabled selected>Selec. concep</option>
@@ -102,17 +104,16 @@
                 </table>
             </div>
             <h3>Retencion de IIBB - CABA</h3>
-            <div>
-                <label>Gravado Total</label><input id="grabadoTotal" type="number" name="grabadoTotal">
-                <label>Alicuota</label><input id="aliIBCABA" type="number" name="aliIBCABA">
-                <label>Coef</label><input id="aliIBCABA" type="number" name="aliIBCABA" value="1">
-                <button>Emitir</button>
+            <div id="retencionesCABA">
+                <label>Alicuota</label><input type="number" id="alicRetCABA" name="alicCABA"  min=0 max=4.5 step=0.01 pattern="^\d+(\.|\,)\d{2}$" onchange="calcularRetCABA(this);">
             </div>
             <h3>Retencion de IIBB - ARBA</h3>
-            <div>
-                <label>Gravado Total</label><input id="grabadoTotal" type="number" name="grabadoTotal">
-                <label>Alicuota</label><input id="aliIBARBA" type="number" name="aliIBARBA">
-                <button>Emitir</button>
+            <div id="retencionARBA">
+                <label>Gravado Total</label><input id="grabadoTotal" type="number" name="grabadoTotal" onChange="calcularRetARBA();">
+                <label>Alicuota</label><input id="aliIBARBA" type="number" name="aliIBARBA" onChange="calcularRetARBA();">
+                <label>Coef. BA</label><input id="coefIBARBA" type="number" name="coefIBARBA" onChange="calcularRetARBA();">
+                <label>Importe</label><input id="impIBARBA" type="number" name="impIBARBA" disabled>
+                <button id="emitirRetARBA">Emitir</button>
             </div>
             <h3>Retencion de SUSS</h3>
             <div>
