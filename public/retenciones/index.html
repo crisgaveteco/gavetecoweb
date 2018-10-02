@@ -46,10 +46,13 @@ and open the template in the editor.
                 <div id="resumenIva" class="col-6">
                     <h2 class="sub-header">RETENCIONES DE IVA</h2>
                     <span>Total quincena: </span><span id="totalQuincenaIva"></span>
+                    <input id="getNextRetBtn" type="button" value="Actualizar">
+                    <input id="nextRetBtn" type="number">
+                    <input id="setNextRetBtn" type="button" value="Grabar">
                     <div class="table-responsive" style="height: 250px;overflow-y: auto;">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th>S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
                             </thead>
                             <tbody>
                             </tbody>
@@ -62,7 +65,38 @@ and open the template in the editor.
                     <div class="table-responsive" style="height: 250px;overflow-y: auto;">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th>S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
+                    </div>    
+                </div>
+            </div>
+            <div class="row">
+                <div id="resumenCABA" class="col-6">
+                    <h2 class="sub-header">RET. IIBB CABA</h2>
+                    <span>Total quincena: </span><span id="totalQuincenaIva"></span>
+                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>    
+                </div>
+                <div id="resumenARBA" class="col-6">
+                    <h2 class="sub-header">RET. IIBB ARBA</h2>
+                    <span>Total quincena: </span><span id="totalQuincenaARBA"></span>
+                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
                             </thead>
 
                             <tbody>
