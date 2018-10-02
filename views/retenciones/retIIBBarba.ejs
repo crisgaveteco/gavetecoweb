@@ -20,27 +20,23 @@
     var factura = req.factura.ptoVta+"-"+req.factura.nroFc;
     var porcRet = req.retencion.porcRet;
     var regimen = req.retencion.regimen;*/
-    var nroRet = "00004701";
-    var razonSoc = "CONSORCIO PORTUARIO REGIONAL MDP";
-    var cuit = "30-70738200-3";
-    var nroIIBB = "30-70738200-3";
-    var fechaFc = "VS 26/06/2018";
-    var neto = "3,110.40";
-    var alicuota = "2.50";
-    var coef = "1.0000";
-    var iva = "1.124,55";
-    var impRet = "77.76";
-    var domicilio = "B/P Marlin 404 Mar del Plata , Bs.As.";
-    var factura = "0002"+"-"+"00001345";
-    var concepto = "SERVICIO A LAS CARGAS";
+    var nroRet = req.nroRet;
+    var razonSoc = req.proveedor.nombre;
+    var cuit = req.proveedor.cuit;
+    var IIBBn = req.proveedor.iibbn;
+    var fechaFc = req.factura.fechaFc;
+    var neto = req.retencion.baseImponible;
+    var aliIBARBA = req.retencion.alic;
+    var coefBA = req.retencion.coef;
+    var impRet = req.retencion.importe;
+    var domicilio = req.proveedor.direccion;
+    var factura = req.factura.nrosFc;
+    var concepto = req.retencion.concepto;
     var hoy=new Date();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
-    var porcRet = "50";
-    var regimen = "";
-    var IIBBn="30-70738200-3";
-    var aliIBARBA="0.75";
-    var coefBA="1.0000";
+    
+   
 %>
 <!DOCTYPE html>
 <html lang="es">

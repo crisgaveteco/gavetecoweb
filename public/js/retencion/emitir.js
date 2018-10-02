@@ -100,8 +100,43 @@ function validarEnteros(input) {
 function datosCompletosFC(idFc) {
 
 }
-function crearRetencion(serieFc, ptoVta, nroFc, retencion, porc) {
+function crearRetencionIva(serieFc, ptoVta, nroFc, retencion, porc) {
     return '<div class="retencionIva" id="retencionIva' +
+            serieFc +
+            '"><label>Factura: </label><input type="number" value="' + ptoVta +
+            '" min=0 max=9999 step=1 pattern="[0-9]{1,4}" disabled>-<input type="number" value="' + nroFc +
+            '" min=0 max=99999999 step=1 pattern="[0-9]{1,8}" disabled></span>' +
+            '<label for="importeRetIva' + serieFc + '">Importe Retencion</label><input type="number" class="importeRetIva" id="importeRetIva' + serieFc + '" value="' + retencion + '" min=0 step=0.01 pattern="^\d+(\.|\,)\d{2}$" disabled>' +
+            '<input type="number" name="porcRetIva' + serieFc + '" class="porcRetIva" id="porcRetIva' + serieFc + '" value="' + porc + '" min=0 max=100 step=10 pattern="^\d+(\.|\,)\d{2}$" disabled>' +
+            '<label for="porcRetIva' + serieFc + '">% Retenido del IVA</label><input class="desbloqueaPorcRet" id="desbloqueaPorcRet' + serieFc + '"type="checkbox">' +
+            '<input class="impRetIva" id="impRetIva' + serieFc + '" type="button" value="P"></input>' + '</div>';
+}
+
+function crearRetencionCABA(serieFc, ptoVta, nroFc, porc) {
+    return '<div class="retencionCABA" id="retencionCABA' +
+            serieFc +
+            '"><label>Factura: </label><input type="number" value="' + ptoVta +
+            '" min=0 max=9999 step=1 pattern="[0-9]{1,4}" disabled>-<input type="number" value="' + nroFc +
+            '" min=0 max=99999999 step=1 pattern="[0-9]{1,8}" disabled></span>' +
+            '<label for="importeRetCABA' + serieFc + '"> Retencion $</label><input type="number" class="importeRetCABA" id="importeRetCABA' + serieFc + '" min=0 step=0.01 pattern="^\d+(\.|\,)\d{2}$" disabled>' +
+            '<label for="conceptoRetCABA' + serieFc + '">Concepto</label><input type="text" class="conceptoRetCABA" id="conceptoRetCABA' + serieFc + '">' +
+            '<label for="categoriaRetCABA' + serieFc + '">Categoria</label>'+
+            '<select type="text" class="categoriaRetCABA" id="categoriaRetCABA' + serieFc + '">' +
+            '<option value="" disabled selected>Seleccione opcion</option><option value="Reg. Gral.">Reg. Gral.</option><option value="Conv. Multi.">Conv. Multi.</option></select>'+
+            '<input class="impRetCABA" id="impRetCABA' + serieFc + '" type="button" value="P"></input>' + '</div>';
+}
+
+function calcularRetCABA(evt){
+    var alicuota = $(evt).val();
+    var retenciones = $("#retencionesCABA").find(".retencionCABA");
+    for(var i=0;i<retenciones.length;i++){
+            
+           $(retenciones[i]).find(".importeRetCABA").val(($("#"+$(retenciones[i]).attr("id").replace("retencionCABA","factura")).find(".netoFc").val()*alicuota/100).toFixed(2)); 
+        }
+}
+
+function crearRetencionARBA(serieFc, ptoVta, nroFc, retencion, porc) {
+    return '<div class="retencionCABA" id="retencionCABA' +
             serieFc +
             '"><label>Factura: </label><input type="number" value="' + ptoVta +
             '" min=0 max=9999 step=1 pattern="[0-9]{1,4}" disabled>-<input type="number" value="' + nroFc +
@@ -143,7 +178,7 @@ function agregarRetIva(idFc){
             }
         }
         retencion = Math.round(iva * porc) / 100;
-        $("#retencionesIva").append(crearRetencion(serieFc, ptoVta, nroFc, retencion, porc));
+        $("#retencionesIva").append(crearRetencionIva(serieFc, ptoVta, nroFc, retencion, porc));
         $("#porcRetIva" + serieFc).change(function (e) {
             $($(e.target).parent()).find(".importeRetIva").val((parseFloat($("#factura" + $(e.target).attr("id").replace("porcRetIva", "") + " .ivaFc").val()) * parseFloat($(e.target).val()) / 100).toFixed(2));
         });
@@ -211,6 +246,77 @@ function agregarRetIva(idFc){
     }
     //$("#retencionIva" + serieFc + " input:checkbox").click(desbloquearPorcRet);
 }
+function agregarRetCABA(idFc){
+    var netoG = $(idFc).find(".netoFc").val();
+    var iva = $(idFc).find(".ivaFc").val();
+    var ptoVta = $(idFc).find(".ptoVtaFc").val();
+    var nroFc = $(idFc).find(".nroFc").val();
+    var alic = $("#alicCABA").val();
+    var retencion = 0;
+    var es51 = $(idFc).find(".fcM").prop("checked");
+    var concepto = $(idFc).find(".conceptoFc option:selected").val();
+    var serieFc = $(idFc).attr("id").replace("factura", "");
+    if (parseFloat(netoG) > 400) {
+        retencion = Math.round(netoG * alic) / 100;
+        $("#retencionesCABA").append(crearRetencionCABA(serieFc, ptoVta, nroFc, retencion, alic));
+        $("#alicCABA" + serieFc).change(function (e) {
+            $($(e.target).parent()).find(".importeRetCABA").val((parseFloat($("#factura" + $(e.target).attr("id").replace("alicCABA", "") + " .netoFc").val()) * parseFloat($(e.target).val()) / 100).toFixed(2));
+        });
+        $("#alicCABA" + serieFc).blur(function (e) {
+            $("#alicCABA" + serieFc).change();
+        });
+        $("#alicCABA" + serieFc).click(function (e) {
+            $("#alicCABA" + serieFc).change();
+        });
+        
+        $("#impRetCABA" + serieFc).click(function (evt) {
+            var id = $(evt.target).parent().attr("id").replace("retencionCABA", "");
+            console.log("fecha fc en emitir.js  :   " + $("#factura" + id + " .fechaFc").val());
+            var fechaFcISO = $("#factura" + id + " .fechaFc").val();
+            var fechaFcARG = fechaFcISO.substr(8, 2) + "/" + fechaFcISO.substr(5, 2) + "/" + fechaFcISO.substr(0, 4);
+            
+            var datosFactura = {proveedor: proveedor,
+                factura: {
+                    tipoComp: $("#factura" + id + " .tipoCompFc").val(),
+                    ptoVta: $("#factura" + id + " .ptoVtaFc").val(),
+                    nroFc: $("#factura" + id + " .nroFc").val(),
+                    netoG: $("#factura" + id + " .netoFc").val(),
+                    ivaFc: $("#factura" + id + " .ivaFc").val(),
+                    totalFc: $("#factura" + id + " .totalFc").val(),
+                    fechaFc: fechaFcARG},
+                retencion: {importe: $("#importeRetCABA" + id).val(),
+                    cat: $("#categoriaRetCABA" + id).val(),
+                    alic: $("#alicRetCABA").val(),
+                    tipoRet: $("#categoriaRetCABA"+id+" option:selected").text(),
+                    concepto: $("#conceptoRetCABA"+id).val(),
+                    fechaRet: $("#fechaRetenciones").val()
+                }
+            };
+            console.log("nro de factura  :   " + datosFactura.factura.nroFc);
+            console.log("domicilio prov  :   " + datosFactura.proveedor.domicilio);
+            $.post({
+                url: 'emitir/IIBBcaba',
+                contentType: 'application/json',
+                data: JSON.stringify(datosFactura),
+                cache: false,
+                async: false,
+                success: function (data) {
+                    var w = window.open('about:blank');
+                    w.document.open();
+                    w.document.write(data);
+                    w.document.close();
+                },
+                error: function (response)
+                {
+                    alert('error al guardar los datos');
+                }
+                //return false;
+            });
+
+        });
+    }
+    //$("#retencionIva" + serieFc + " input:checkbox").click(desbloquearPorcRet);
+}
 function desbloquearPorcRet(evt) {
     var inputPorc = $(evt.target).parent().find(".porcRetIva");
     inputPorc.attr("disabled", !$(evt.target).prop("checked"));
@@ -220,6 +326,11 @@ function desbloquearPorcRet(evt) {
 function eliminarRetIva(idFc) {
     var nroRet = $(idFc).attr("id").replace("factura", "");
     $("#retencionIva" + nroRet).remove();
+}
+
+function eliminarRetCABA(idFc) {
+    var nroRet = $(idFc).attr("id").replace("factura", "");
+    $("#retencionCABA" + nroRet).remove();
 }
 
 function acumularEnGcias(idFc) {
@@ -270,6 +381,8 @@ function acumularEnGcias(idFc) {
         }
     });
     $("#retencionGCIAS #netoGCIAS").val(netoT.toFixed(2));
+    $("#retencionARBA #grabadoTotal").val(netoT.toFixed(2));
+    calcularRetARBA();
     $("#retencionGCIAS #deduccionesGCIAS").val(ivaT.toFixed(2));
     $("#retencionGCIAS #brutoGCIAS").val((netoT + ivaT).toFixed(2));
     $("#retencionGCIAS").val(0);
@@ -318,6 +431,12 @@ function calcularRetGCIAS() {
     }
 
 }
+function calcularRetARBA(){
+    if($("#retencionARBA #aliIBARBA").val()!=""&&$("#retencionARBA #coefIBARBA").val()!=""&&$("#retencionARBA #grabadoTotal").val()!=""){
+        $("#retencionARBA #impIBARBA").val(
+                parseFloat(Math.round($("#retencionARBA #aliIBARBA").val()*parseFloat($("#retencionARBA #coefIBARBA").val())*parseFloat($("#retencionARBA #grabadoTotal").val()))/100));
+    }
+}
 
 function setClickBloquearFc(evt) {
     var check = evt.target;
@@ -339,12 +458,16 @@ function setClickBloquearFc(evt) {
         });
         if (bloqueado) {
             agregarRetIva($(check).parent());
+            agregarRetCABA($(check).parent());
             acumularEnGcias();
             setPorcYMinimoGCIAS();
             calcularRetGCIAS();
+            calcularRetARBA();
         } else {
             eliminarRetIva($(check).parent());
+            eliminarRetCABA($(check).parent());
             acumularEnGcias();
+            calcularRetARBA();
         }
     } else {
         $(check).prop("checked", false);
@@ -416,6 +539,8 @@ $(document).ready(function () {
                 }else{
                     $(e.target).parent().find(".fcM").prop("checked",false);
                 }
+                $(e.target).parent().find(".tipoCompFc").val(comprobante.tico);
+                $(e.target).parent().find(".totalFc").val(parseFloat(comprobante.Total));
             },
             error: function (response)
             {
@@ -453,7 +578,9 @@ $(document).ready(function () {
                 }else{
                     $(e.target).parent().find(".fcM").prop("checked",false);
                 }
-                    
+                $(e.target).parent().find(".tipoCompFc").val(comprobante.tico);
+                console.log("Total factura: "+comprobante.Total);
+                $(e.target).parent().find(".totalFc").val(parseFloat(comprobante.Total));
 //                $("#razonSocial").html((proveedor.nombre));
 //                $("#direccion").html((proveedor.direccion));
 //                $("#cuit").html((proveedor.cuit));
@@ -577,6 +704,89 @@ $(document).ready(function () {
         //console.log("domicilio prov  :   " + datosFactura.proveedor.domicilio);
         $.post({
             url: 'emitir/gcias',
+            contentType: 'application/json',
+            data: JSON.stringify(datosFactura),
+            cache: false,
+            async: false,
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            },
+            error: function (response)
+            {
+                alert('error al guardar los datos');
+            }
+            //return false;
+        });
+
+    });
+        $("#emitirRetARBA").click(function (evt) {
+        var fechaUltFc = new Date();
+        var nrosFC = new Array();
+        $(".factura").each(function (i, elem) {
+            if (i === 0) {
+                fechaUltFc.setTime(Date.parse($(elem).find(".fechaFc").val()));
+            } else {
+                if (fechaUltFc < Date.parse($(elem).find(".fechaFc").val())) {
+                    fechaUltFc.setTime(Date.parse($(elem).find(".fechaFc").val()));
+                }
+            }
+            nrosFC.push({ptoVta: $(elem).find(".ptoVtaFc").val(), nroFc: $(elem).find(".nroFc").val()});
+        });
+        nrosFC.sort(function (a, b) {
+            if (parseInt(a.ptoVta) < parseInt(b.ptoVta)) {
+                return -1;
+            } else {
+                if (a.ptoVta === b.ptoVta) {
+                    if (parseInt(a.nroFc) < parseInt(b.nroFc)) {
+                        return -1;
+                    } else {
+                        if (parseInt(a.nroFc) > parseInt(b.nroFc)) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                } else {
+                    return 1;
+                }
+            }
+        });
+        var cadenaFCs = "";
+        var ptoVtaAc = 0;
+        nrosFC.forEach(function (el, i) {
+            if (i > 0) {
+                cadenaFCs += "/";
+            }
+            if (ptoVtaAc === el.ptoVta) {
+                cadenaFCs += el.nroFc;
+            } else {
+                ptoVtaAc = el.ptoVta;
+                cadenaFCs += el.ptoVta + "-" + el.nroFc;
+            }
+        });
+        console.log(cadenaFCs);
+        var datosFactura = {proveedor: proveedor,
+            factura: {nrosFc: cadenaFCs,
+                fechaFc: fechaUltFc},
+            retencion: {
+                concepto: $("#conceptoFc option:selected").text(),
+                baseImponible: $("#grabadoTotal").val(),
+                importe: $("#impIBARBA").val(),
+                alic: $("#aliIBARBA").val(),
+                coef: $("#coefIBARBA").val(),
+                fechaRet: $("#fechaRetenciones").val(),
+                emitida: false,
+                anulada: false,
+                pago: 0
+            }};
+
+        //console.log("nro de factura  :   " + datosFactura.factura.nroFc);
+        //console.log("domicilio prov  :   " + datosFactura.proveedor.domicilio);
+        $.post({
+            url: 'emitir/IIBBarba',
             contentType: 'application/json',
             data: JSON.stringify(datosFactura),
             cache: false,

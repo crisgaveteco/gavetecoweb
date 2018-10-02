@@ -51,7 +51,7 @@ and open the template in the editor.
     display: block;
     margin-left: 3%;
     margin-right: 4%;
-    margin-top: 15px;
+    margin-top: 1.8%;
     margin-bottom: 7px;
 
 }
@@ -74,14 +74,14 @@ and open the template in the editor.
     width: 18%;
 }
 #netoSpan,#ivaSpan{
-    text-align: right;
+    text-align: center;
 }
 #netoSpan{
-    width: 39.5%;
+    width: 30.5%;
     text-align: left;
 }
 #ivaSpan{
-    width: 41%;
+    width: 30%;
 }
 #porcSpan{
     width: 22%;
@@ -108,13 +108,11 @@ and open the template in the editor.
     font-size: 13px;
 }
 #lineaDom{
-    margin-top: 14px
+        
 }
-#lineaFac{
-    margin-top: 51px;
-}
+
 #lineaConc{
-    margin-top : 25px;
+    margin-top : 3.1%;
     margin-bottom: 8px;
 }
 #lineaNeto{
@@ -124,22 +122,30 @@ and open the template in the editor.
     margin-top: 19px;
 }
 #lineaProv{
-    margin-top: 19px;
+   margin-top: 6.5%
 }
 #lineaImpRet{
-    margin-top: 23px;
+    margin-top: 2.272%;
 }
 #lineaRegimen{
     margin-top: 26px;
 }
 #lineaDatosFinal{
-    margin-top: 55px;
+    margin-top: 5%;
 }
 .lineaDatos span{
     text-align: center;
     margin-left: 10px;
 }
-
+#lineaTipoRet{
+    margin-top: 8%;
+}
+#IIBBn{
+    width: 45%;
+}
+#tipoCompSpan{
+    width: 42%;
+}
 @media print{
     @page{
         size: A4 portrait;

@@ -1,0 +1,99 @@
+<%
+    var nroRet = "0".repeat(7-nroRet.toString.length).concat(parseInt(nroRet));
+    var prov = req.proveedor.codigo;
+    var razonSoc = req.proveedor.nombre;
+    var cuit = req.proveedor.cuit;
+    var IIBBn = req.proveedor.NroInscIB;
+    var fechaFc = req.factura.fechaFc;
+    var neto = parseFloat(req.factura.netoG).toFixed(2);
+    var iva = parseFloat(req.factura.ivaFc).toFixed(2);
+    var impRet = parseFloat(req.retencion.importe).toFixed(2);
+    var domicilio = req.proveedor.direccion+","+req.proveedor.localidad+","+req.proveedor.provincia;
+    var concepto = req.retencion.concepto;
+    var hoy=new Date(req.retencion.fechaRet);
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
+    var porcRet = req.retencion.porcRet;
+    var categoria = req.retencion.cat;
+    var hoy=new Date(req.retencion.fechaRet);
+    var iva = parseFloat(req.factura.ivaFc).toFixed(2);
+    var factura = "0".repeat(4-req.factura.ptoVta.length)+req.factura.ptoVta+"-"+"0".repeat(8-req.factura.nroFc.length)+req.factura.nroFc;
+    var alic = parseFloat(req.retencion.alic).toFixed(2)+"%";
+    var totalFc= parseFloat(req.factura.totalFc);
+    var otrosConceptos = (totalFc-neto-iva).toFixed(2);
+    var tipoComprobante = "";
+    switch(req.factura.tipoComp){
+        case "001": tipoComprobante = "Factura A";break;
+        case "002": tipoComprobante = "Nota de debito A";break;
+        case "003": tipoComprobante = "Nota de credito A";break;
+        case "011": tipoComprobante = "Factura C";break;
+        case "051": tipoComprobante = "Factura M";break;
+        default: tipoComprobante = "Factura A";break;
+    }
+    
+    /*var nroRet = "00004701";
+    var razonSoc = "CONSORCIO PORTUARIO REGIONAL MDP";
+    var cuit = "30-70738200-3";
+    var nroIIBB = "30-70738200-3";
+    var fechaFc = "VS 26/06/2018";
+    var neto = "3,110.40";
+    var alicuota = "2.50";
+    var coef = "1.0000";
+    var iva = "1.124,55";
+    var impRet = "77.76";
+    var domicilio = "B/P Marlin 404 Mar del Plata , Bs.As.";
+    var factura = "0002"+"-"+"00001345";
+    var concepto = "SERVICIO A LAS CARGAS";
+    var hoy=new Date();
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var fechaRet = hoy.getUTCDate()+" de "+monthNames[hoy.getUTCMonth()]+" de "+hoy.getUTCFullYear();
+    var porcRet = "50";
+    var regimen = "";
+    var IIBBn="30-70738200-3";
+    var aliIBARBA="0.75";
+    var coefBA="1.0000";
+    var categoria="Reg. Gral.";
+    var tipoComprobante="Factura A";*/
+%>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Ret.CABA FC<%=factura%></title>
+        <link href="/css/retenciones/comprobanteCABA.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <form action="/">
+            <div id="mainConteiner">
+                <div id='encabezado'>
+                    <span id="membrete">
+                        <div class="bajada" id="GAVETECO"><b>GAVETECO S.A.I.C.F.e.I.</b></div>
+                        <div class="bajada">Av. BELGRANO 1281 - 1º Piso</div>
+                        <div class="bajada">(1093) Capital Federal</div>
+                        <div class="bajada">C.U.I.T.: 30-50373996-4</div>
+                        <div class="bajada">I.V.A. Responsable Inscripto</div>
+                    </span>
+                    <span id="comprobante">
+                        <div>COMPROBANTE</div>
+                        <div id="nroComp">Nº 0000 - <%=nroRet%></div>
+                    </span>
+                </div>
+                <div id="cuerpo">
+                    <div id="titulo">Constancia de Retencion IIBB CABA</div>
+                    <div class="lineaDatos" id="lineaProv"><label>Proveedor: </label><div id="provSpan" class="datoRet"><%=razonSoc%></div><label>C.U.I.T: </label><div  class="datoRet" id="cuitSpan"><%=cuit%></div></div>
+                    <div class="lineaDatos" id="lineaDom"><label>Domicilio: </label><span id="domSpan" class="datoRet"><%=domicilio%></span></div>
+                    <div class="lineaDatos" id="lineaIIBBN"><label>IIBB Nº: </label><span id="IIBBn" class="datoRet IIBBn"><%=IIBBn%></span><label>Categoria: </label><span id="cat" class="datoRet cat"><%=categoria%></span></div>
+                    <div class="lineaDatos" id="lineaTipoRet"><label>Tipo de Retencion: </label><span class="datoRet" id="concSpan"><%=concepto%></span></div>
+                    <div class="lineaDatos" id="lineaFac"><label>Comprobante: </label><span class="datoRet" id="tipoCompSpan"><%=tipoComprobante%></span><label>Nº: </label><span class="datoRet" id="nroFcSpan"><%=factura%></span></div>
+                    <div class="lineaDatos" id="lineaFechaFc"><label>Fecha de comprobante: </label><span class="datoRet" id="fechaSpan"><%=fechaFc%></span></div>
+                    <div class="lineaDatos" id="lineaConc"><label>Concepto: </label><span class="datoRet" id="concSpan"><%=concepto%></span></div>
+                    <div class="lineaDatos" id="lineaNeto"><label>Monto que origina la retencion $:</label><span class="datoRet" id="netoSpan"><%=neto%></span><label>Alicuota $:</label><span class="datoRet" id="aliIBCABA"><%=alic%></span></div>
+                    <div class="lineaDatos" id="lineaIva"><label>Importe I.V.A. $: </label><span class="datoRet" id="ivaSpan"><%=iva%></span><label>Otros conceptos $: </label><span class="datoRet" id="coefBASpan"><%=otrosConceptos%></span></div>
+                    <div class="lineaDatos" id="lineaImpRet"><label>Importe retenido $: </label><span class="datoRet" id="impRetSpan"><%=impRet%></span></div>
+                    <div class="lineaDatos" id="lineaDatosFinal"><label>C.A.B.A.: </label><span  class="datoRet" id="fechaRetSpan"><%=fechaRet%></span></div>
+                </div>
+            </div>
+            <div><input type="submit"></div>             
+        </form>
+    </body>
+</html>
