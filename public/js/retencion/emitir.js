@@ -28,7 +28,7 @@ var cuadroGcias = [{concepto: "Bienes", importe: 142400, porc: 2},
     {concepto: "Honorarios", importe: 10700, porc: 2, tabla: cuadroHonorariosGCIAS},
     {concepto: "Fletes", importe: 42700, porc: 2}];
 
-var minimaRetGCIAS=150;
+var minimaRetGCIAS = 150;
 
 function sumarImportes(selector) {
     var n = 1;
@@ -120,19 +120,19 @@ function crearRetencionCABA(serieFc, ptoVta, nroFc, porc) {
             '" min=0 max=99999999 step=1 pattern="[0-9]{1,8}" disabled></span>' +
             '<label for="importeRetCABA' + serieFc + '"> Retencion $</label><input type="number" class="importeRetCABA" id="importeRetCABA' + serieFc + '" min=0 step=0.01 pattern="^\d+(\.|\,)\d{2}$" disabled>' +
             '<label for="conceptoRetCABA' + serieFc + '">Concepto</label><input type="text" class="conceptoRetCABA" id="conceptoRetCABA' + serieFc + '">' +
-            '<label for="categoriaRetCABA' + serieFc + '">Categoria</label>'+
+            '<label for="categoriaRetCABA' + serieFc + '">Categoria</label>' +
             '<select type="text" class="categoriaRetCABA" id="categoriaRetCABA' + serieFc + '">' +
-            '<option value="" disabled selected>Seleccione opcion</option><option value="Reg. Gral.">Reg. Gral.</option><option value="Conv. Multi.">Conv. Multi.</option></select>'+
+            '<option value="" disabled selected>Seleccione opcion</option><option value="Reg. Gral.">Reg. Gral.</option><option value="Conv. Multi.">Conv. Multi.</option></select>' +
             '<input class="impRetCABA" id="impRetCABA' + serieFc + '" type="button" value="P"></input>' + '</div>';
 }
 
-function calcularRetCABA(evt){
+function calcularRetCABA(evt) {
     var alicuota = $(evt).val();
     var retenciones = $("#retencionesCABA").find(".retencionCABA");
-    for(var i=0;i<retenciones.length;i++){
-            
-           $(retenciones[i]).find(".importeRetCABA").val(($("#"+$(retenciones[i]).attr("id").replace("retencionCABA","factura")).find(".netoFc").val()*alicuota/100).toFixed(2)); 
-        }
+    for (var i = 0; i < retenciones.length; i++) {
+
+        $(retenciones[i]).find(".importeRetCABA").val(($("#" + $(retenciones[i]).attr("id").replace("retencionCABA", "factura")).find(".netoFc").val() * alicuota / 100).toFixed(2));
+    }
 }
 
 function crearRetencionARBA(serieFc, ptoVta, nroFc, retencion, porc) {
@@ -149,7 +149,7 @@ function crearRetencionARBA(serieFc, ptoVta, nroFc, retencion, porc) {
 
 
 
-function agregarRetIva(idFc){
+function agregarRetIva(idFc) {
     var netoG = $(idFc).find(".netoFc").val();
     var iva = $(idFc).find(".ivaFc").val();
     var ptoVta = $(idFc).find(".ptoVtaFc").val();
@@ -159,7 +159,7 @@ function agregarRetIva(idFc){
     var es51 = $(idFc).find(".fcM").prop("checked");
     var concepto = $(idFc).find(".conceptoFc option:selected").val();
     var serieFc = $(idFc).attr("id").replace("factura", "");
-    if (($("#exclusiones .exclusion:checked").length === 0 && iva >= 400)||(($("#reproweb option:selected").val() === "2" || $("#reproweb option:selected").val() === "5" || es51) && iva < 400)) {
+    if (($("#exclusiones .exclusion:checked").length === 0 && iva >= 400) || (($("#reproweb option:selected").val() === "2" || $("#reproweb option:selected").val() === "5" || es51) && iva < 400)) {
         if ($("#reproweb option:selected").val() === "2" || $("#reproweb option:selected").val() === "5" || es51) {
             porc = 100;
         } else {
@@ -246,7 +246,7 @@ function agregarRetIva(idFc){
     }
     //$("#retencionIva" + serieFc + " input:checkbox").click(desbloquearPorcRet);
 }
-function agregarRetCABA(idFc){
+function agregarRetCABA(idFc) {
     var netoG = $(idFc).find(".netoFc").val();
     var iva = $(idFc).find(".ivaFc").val();
     var ptoVta = $(idFc).find(".ptoVtaFc").val();
@@ -268,13 +268,13 @@ function agregarRetCABA(idFc){
         $("#alicCABA" + serieFc).click(function (e) {
             $("#alicCABA" + serieFc).change();
         });
-        
+
         $("#impRetCABA" + serieFc).click(function (evt) {
             var id = $(evt.target).parent().attr("id").replace("retencionCABA", "");
             console.log("fecha fc en emitir.js  :   " + $("#factura" + id + " .fechaFc").val());
             var fechaFcISO = $("#factura" + id + " .fechaFc").val();
             var fechaFcARG = fechaFcISO.substr(8, 2) + "/" + fechaFcISO.substr(5, 2) + "/" + fechaFcISO.substr(0, 4);
-            
+
             var datosFactura = {proveedor: proveedor,
                 factura: {
                     tipoComp: $("#factura" + id + " .tipoCompFc").val(),
@@ -287,8 +287,8 @@ function agregarRetCABA(idFc){
                 retencion: {importe: $("#importeRetCABA" + id).val(),
                     cat: $("#categoriaRetCABA" + id).val(),
                     alic: $("#alicRetCABA").val(),
-                    tipoRet: $("#categoriaRetCABA"+id+" option:selected").text(),
-                    concepto: $("#conceptoRetCABA"+id).val(),
+                    tipoRet: $("#categoriaRetCABA" + id + " option:selected").text(),
+                    concepto: $("#conceptoRetCABA" + id).val(),
                     fechaRet: $("#fechaRetenciones").val()
                 }
             };
@@ -390,9 +390,9 @@ function acumularEnGcias(idFc) {
 }
 
 function setPorcYMinimoGCIAS() {
-    if($(".fcM").prop("checked")){
+    if ($(".fcM").prop("checked")) {
         $("#minimoGCIAS").val("0");
-    }else{
+    } else {
         $("#minimoGCIAS").val(cuadroGcias[$("#factura1 .conceptoFc option:selected").val()].importe);
     }
     $("#porcRetGCIAS").val(cuadroGcias[$("#factura1 .conceptoFc option:selected").val()].porc);
@@ -426,15 +426,15 @@ function calcularRetGCIAS() {
     if ($("#importeARetGcias").val() === "" || parseFloat($("#importeARetGcias").val()) <= 0) {
         $("#emitirRetGcias").prop("disabled", true);
     } else {
-        if(parseFloat($("#importeARetGcias").val()) >= minimaRetGCIAS||$(".fcM")[0].prop("checked"))
-        $("#emitirRetGcias").prop("disabled", false);
+        if (parseFloat($("#importeARetGcias").val()) >= minimaRetGCIAS || $(".fcM")[0].prop("checked"))
+            $("#emitirRetGcias").prop("disabled", false);
     }
 
 }
-function calcularRetARBA(){
-    if($("#retencionARBA #aliIBARBA").val()!=""&&$("#retencionARBA #coefIBARBA").val()!=""&&$("#retencionARBA #grabadoTotal").val()!=""){
+function calcularRetARBA() {
+    if ($("#retencionARBA #aliIBARBA").val() != "" && $("#retencionARBA #coefIBARBA").val() != "" && $("#retencionARBA #grabadoTotal").val() != "") {
         $("#retencionARBA #impIBARBA").val(
-                parseFloat(Math.round($("#retencionARBA #aliIBARBA").val()*parseFloat($("#retencionARBA #coefIBARBA").val())*parseFloat($("#retencionARBA #grabadoTotal").val()))/100));
+                parseFloat(Math.round($("#retencionARBA #aliIBARBA").val() * parseFloat($("#retencionARBA #coefIBARBA").val()) * parseFloat($("#retencionARBA #grabadoTotal").val())) / 100));
     }
 }
 
@@ -523,21 +523,21 @@ $(document).ready(function () {
                 $(e.target).parent().find(".ptoVtaFc").val(parseInt(comprobante.NroCompro.substring(0, comprobante.NroCompro.indexOf("-"))), 10);
                 $(e.target).parent().find(".nroFc").val(parseInt(comprobante.NroCompro.substring(comprobante.NroCompro.indexOf("-") + 1, comprobante.NroCompro.length)), 10);
                 console.log("21:" + comprobante.IVA21 + " 10.5: " + comprobante.IVA1050 + " 27:" + comprobante.IVA27);
-                var negativador=1;
-                    if(comprobante.FDC=="C"){
-                        negativador=-1;
-                    }
-                $(e.target).parent().find(".netoFc").val(((parseFloat(comprobante.Bruto21) + parseFloat(comprobante.Bruto1050) + parseFloat(comprobante.Bruto27))*negativador).toFixed(2));
-                $(e.target).parent().find(".ivaFc").val(((parseFloat(comprobante.IVA21) + parseFloat(comprobante.IVA1050) + parseFloat(comprobante.IVA27))*negativador).toFixed(2));
+                var negativador = 1;
+                if (comprobante.FDC == "C") {
+                    negativador = -1;
+                }
+                $(e.target).parent().find(".netoFc").val(((parseFloat(comprobante.Bruto21) + parseFloat(comprobante.Bruto1050) + parseFloat(comprobante.Bruto27)) * negativador).toFixed(2));
+                $(e.target).parent().find(".ivaFc").val(((parseFloat(comprobante.IVA21) + parseFloat(comprobante.IVA1050) + parseFloat(comprobante.IVA27)) * negativador).toFixed(2));
                 var vecFecha = comprobante.Fecha.split("/");
                 $(e.target).parent().find(".fechaFc").val(vecFecha[2] + "-" + vecFecha[1] + "-" + vecFecha[0]);
 //                $("#razonSocial").html((proveedor.nombre));
 //                $("#direccion").html((proveedor.direccion));
 //                $("#cuit").html((proveedor.cuit));
-                if(comprobante.tico=="051"){
-                    $(e.target).parent().find(".fcM").prop("checked",true);
-                }else{
-                    $(e.target).parent().find(".fcM").prop("checked",false);
+                if (comprobante.tico == "051") {
+                    $(e.target).parent().find(".fcM").prop("checked", true);
+                } else {
+                    $(e.target).parent().find(".fcM").prop("checked", false);
                 }
                 $(e.target).parent().find(".tipoCompFc").val(comprobante.tico);
                 $(e.target).parent().find(".totalFc").val(parseFloat(comprobante.Total));
@@ -558,29 +558,29 @@ $(document).ready(function () {
             $.post({
                 url: '../avm/comprobante',
                 contentType: 'application/json',
-                data: JSON.stringify({codProv: $("#codProv").val(), ptoVenta: ptoVenta,nroFc:numeroFC}),
+                data: JSON.stringify({codProv: $("#codProv").val(), ptoVenta: ptoVenta, nroFc: numeroFC}),
                 cache: false,
                 async: true,
                 success: function (data) {
                     comprobante = JSON.parse(data);
                     console.log("intentando grabar el nombre: " + comprobante.NroInterno);
                     $(e.target).parent().find(".fcNroInterno").val(parseInt(comprobante.NroInterno));
-                    var negativador=1;
-                    if(comprobante.FDC=="C"){
-                        negativador=-1;
+                    var negativador = 1;
+                    if (comprobante.FDC == "C") {
+                        negativador = -1;
                     }
-                    $(e.target).parent().find(".netoFc").val(((parseFloat(comprobante.Bruto21) + parseFloat(comprobante.Bruto1050) + parseFloat(comprobante.Bruto27))*negativador).toFixed(2));
-                    $(e.target).parent().find(".ivaFc").val(((parseFloat(comprobante.IVA21) + parseFloat(comprobante.IVA1050) + parseFloat(comprobante.IVA27))*negativador).toFixed(2));
+                    $(e.target).parent().find(".netoFc").val(((parseFloat(comprobante.Bruto21) + parseFloat(comprobante.Bruto1050) + parseFloat(comprobante.Bruto27)) * negativador).toFixed(2));
+                    $(e.target).parent().find(".ivaFc").val(((parseFloat(comprobante.IVA21) + parseFloat(comprobante.IVA1050) + parseFloat(comprobante.IVA27)) * negativador).toFixed(2));
                     var vecFecha = comprobante.Fecha.split("/");
                     $(e.target).parent().find(".fechaFc").val(vecFecha[2] + "-" + vecFecha[1] + "-" + vecFecha[0]);
-                    if(comprobante.tico=="051"){
-                    $(e.target).parent().find(".fcM").prop("checked",true);
-                }else{
-                    $(e.target).parent().find(".fcM").prop("checked",false);
-                }
-                $(e.target).parent().find(".tipoCompFc").val(comprobante.tico);
-                console.log("Total factura: "+comprobante.Total);
-                $(e.target).parent().find(".totalFc").val(parseFloat(comprobante.Total));
+                    if (comprobante.tico == "051") {
+                        $(e.target).parent().find(".fcM").prop("checked", true);
+                    } else {
+                        $(e.target).parent().find(".fcM").prop("checked", false);
+                    }
+                    $(e.target).parent().find(".tipoCompFc").val(comprobante.tico);
+                    console.log("Total factura: " + comprobante.Total);
+                    $(e.target).parent().find(".totalFc").val(parseFloat(comprobante.Total));
 //                $("#razonSocial").html((proveedor.nombre));
 //                $("#direccion").html((proveedor.direccion));
 //                $("#cuit").html((proveedor.cuit));
@@ -595,27 +595,38 @@ $(document).ready(function () {
     });
     $("#codProv").blur(function (e) {
         //Code: Action (like ajax...)
-        e.preventDefault();
-        $.post({
-            url: '../avm/proveedor',
-            contentType: 'application/json',
-            data: JSON.stringify({codProv: $("#codProv").val()}),
-            cache: false,
-            async: true,
-            success: function (data) {
-                proveedor = JSON.parse(data);
-                console.log("intentando grabar el nombre: " + proveedor.nombre);
-                $("#razonSocial").html((proveedor.nombre));
-                $("#direccion").html((proveedor.direccion));
-                $("#cuit").html((proveedor.cuit));
-            },
-            error: function (response)
-            {
-                alert('error al guardar los datos');
-            }
-            //return false;
-        });
-
+        var element = this;
+        if ($(element).val() !== "") {
+            e.preventDefault();
+            $.post({
+                url: '../avm/proveedor',
+                contentType: 'application/json',
+                data: JSON.stringify({codProv: $("#codProv").val()}),
+                cache: false,
+                async: true,
+                success: function (data) {
+                    proveedor = JSON.parse(data);
+                    console.log("intentando grabar el nombre: " + proveedor.nombre);
+                    if (proveedor.codigo === "PARAMETROS ERRONEOS\r\n") {
+                        $("#razonSocial").html("");
+                        $("#direccion").html("");
+                        $("#cuit").html("");
+                        alert('No existe ese código de proveedor');
+                        $(element).val("");
+                        element.focus();
+                    } else {
+                        $("#razonSocial").html((proveedor.nombre));
+                        $("#direccion").html((proveedor.direccion));
+                        $("#cuit").html((proveedor.cuit));
+                    }
+                },
+                error: function (response)
+                {
+                    alert('error al guardar los datos');
+                }
+                //return false;
+            });
+        }
     });
     $("#emitirRetGcias").click(function (evt) {
         var fechaUltFc = new Date();
@@ -722,7 +733,7 @@ $(document).ready(function () {
         });
 
     });
-        $("#emitirRetARBA").click(function (evt) {
+    $("#emitirRetARBA").click(function (evt) {
         var fechaUltFc = new Date();
         var nrosFC = new Array();
         $(".factura").each(function (i, elem) {

@@ -20,93 +20,113 @@ and open the template in the editor.
         <script src="js/index.js" type="text/javascript"></script>
     </head>
     <body>
-        <nav>
-            <div class="container">
-                <ul class="list-group" style="display: inline-block;">
-                    <li class="list-group-item list-group-item-action option col-3">
-                        <a href="/retenciones/emitir">
-                            Emitir
-                        </a>
+        <div class="container-fluid">
+            <div class="row">    
+                <nav>
+                    <div class="container">
+                        <ul class="list-group" style="display: inline-block;">
+                            <li class="list-group-item list-group-item-action option col-3">
+                                <a href="/retenciones/emitir">
+                                    Emitir
+                                </a>
+                            </li>
+                            <li class="list-group-item list-group-item-action option col-3">
+                                <a href="/retenciones/busqueda?">
+                                    Consulta
+                                </a>
+                            </li>
+                            <li class="list-group-item list-group-item-action option col-6">
+                                <a href="expoSicore.html">
+                                    Exportar a SICORE
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs col-12" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#IVA" role="tab" data-toggle="tab">IVA</a>
                     </li>
-                    <li class="list-group-item list-group-item-action option col-3">
-                        <a href="/retenciones/busqueda?">
-                            Consulta
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#GCIAS" role="tab" data-toggle="tab">GCIAS</a>
                     </li>
-                    <li class="list-group-item list-group-item-action option col-6">
-                        <a href="expoSicore.html">
-                            Exportar a SICORE
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#CABA" role="tab" data-toggle="tab">CABA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ARBA" role="tab" data-toggle="tab">ARBA</a>
                     </li>
                 </ul>
             </div>
-        </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <div id="resumenIva" class="col-6">
-                    <h2 class="sub-header">RETENCIONES DE IVA</h2>
-                    <span>Total quincena: </span><span id="totalQuincenaIva"></span>
-                    <input id="getNextRetBtn" type="button" value="Actualizar">
-                    <input id="nextRetBtn" type="number">
-                    <input id="setNextRetBtn" type="button" value="Grabar">
-                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>    
-                </div>
-                <div id="resumenGcias" class="col-6">
-                    <h2 class="sub-header">RETENCIONES DE GCIAS</h2>
-                    <span>Total quincena: </span><span id="totalQuincenaGCIAS"></span>
-                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
-                            </thead>
-
-                            <tbody>
-
-                            </tbody>
-
-                        </table>
-                    </div>    
+            <div  id="retenciones" class="row">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active show col-12" id="IVA">
+                        <div id="resumenIva" class="">
+                            <h2 class="sub-header">RETENCIONES DE IVA</h2>
+                            <span>Total quincena: </span><span id="totalQuincenaIva"></span>
+                            <input id="getNextRetBtn" type="button" value="Actualizar">
+                            <input id="nextRetBtn" type="number">
+                            <input id="setNextRetBtn" type="button" value="Grabar">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>    
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade col-12" id="GCIAS">
+                        <div id="resumenGcias" class="">
+                            <h2 class="sub-header">RETENCIONES DE GCIAS</h2>
+                            <span>Total quincena: </span><span id="totalQuincenaGCIAS"></span>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>    
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade col-12" id="CABA">
+                        <div id="resumenCABA" class="">
+                            <h2 class="sub-header">RET. IIBB CABA</h2>
+                            <span>Total quincena: </span><span id="totalQuincenaIva"></span>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>    
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade col-12" id="ARBA">
+                        <div id="resumenARBA" class="">
+                            <h2 class="sub-header">RET. IIBB ARBA</h2>
+                            <span>Total quincena: </span><span id="totalQuincenaARBA"></span>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>    
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div id="resumenCABA" class="col-6">
-                    <h2 class="sub-header">RET. IIBB CABA</h2>
-                    <span>Total quincena: </span><span id="totalQuincenaIva"></span>
-                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>    
-                </div>
-                <div id="resumenARBA" class="col-6">
-                    <h2 class="sub-header">RET. IIBB ARBA</h2>
-                    <span>Total quincena: </span><span id="totalQuincenaARBA"></span>
-                    <div class="table-responsive" style="height: 250px;overflow-y: auto;">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                                <tr><th>Num.</th><th>Prov.</th><th>$</th><th class="colNroFactura">S/FC</th><th>Fecha</th><th>Acciones<span></span></th></tr>
-                            </thead>
-
-                            <tbody>
-
-                            </tbody>
-
-                        </table>
-                    </div>    
-                </div>
-            </div>
-        </div>
+        </div>        
     </body>
 </html>

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   retenciones_iva.associate = function(models) {
     // associations can be defined here
-    
+    retenciones_iva.belongsTo(models.prov, { foreignKey: 'prov' , as : 'proveedor'});
   };
   return retenciones_iva;
 };

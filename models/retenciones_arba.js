@@ -2,7 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   var retenciones_arba = sequelize.define('retenciones_arba', {
     nroRet: DataTypes.INTEGER,
-    prov: DataTypes.STRING,
+    prov: {
+        type: DataTypes.STRING,
+    },
     cuit: DataTypes.STRING,
     iibbn: DataTypes.STRING,
     nrosFc: DataTypes.STRING,
@@ -19,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   retenciones_arba.associate = function(models) {
     // associations can be defined here
+    retenciones_arba.belongsTo(models.prov, { foreignKey: 'prov' , as : 'proveedor'});
     
   };
   return retenciones_arba;

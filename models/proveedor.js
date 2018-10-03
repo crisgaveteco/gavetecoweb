@@ -1,7 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var proveedor = sequelize.define('prov', {
-    codigo: DataTypes.STRING,
+  var prov = sequelize.define('prov', {
+    codigo: {
+        type: DataTypes.STRING,
+        primaryKey: true},
     nombre: DataTypes.STRING,
     direccion: DataTypes.STRING,
     cpostal: DataTypes.STRING,
@@ -38,9 +40,9 @@ module.exports = (sequelize, DataTypes) => {
     RetPescaSN: DataTypes.STRING,
     InscPescaSN: DataTypes.STRING
   }, {});
-  proveedor.associate = function(models) {
+  prov.associate = function(models) {
     // associations can be defined here
     
   };
-  return proveedor;
+  return prov;
 };

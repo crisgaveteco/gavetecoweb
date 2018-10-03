@@ -17,25 +17,30 @@ function refrescarTablas(){
 function agregarFilaRetencion(retencion,impuesto){
     var importeRetencion="";
     var facturas;
+    var proveedor;
     switch(impuesto){
         case "Gcias":
         importeRetencion=retencion.retencion-retencion.ret_ant;
         if(retencion.ret_fijo){
             importeRetencion-=retencion.ret_fijo;
         }
+        proveedor=retencion.proveedor.nombre;
         facturas=retencion.facs;
         break;
     case "Iva":
+        console.log(retencion);
         importeRetencion=retencion.ret_importe;
         facturas=retencion.nroFactura;
+        proveedor=retencion.proveedor.nombre;
         break;
     case "ARBA":
         importeRetencion= retencion.importe;
         facturas=retencion.nrosFc;
+        proveedor=retencion.proveedor.nombre;
     }
     $("#resumen"+impuesto+" table tbody").append('<tr class="filaTablaRet">'+
             '<td class="colId celdaTabla">'+retencion.id+
-            '</td><td class="colProv celdaTabla">'+retencion.prov+
+            '</td><td class="colProv celdaTabla">'+proveedor+
             '</td><td class="colImporte celdaTabla">'+parseFloat(importeRetencion.toFixed(2)).toLocaleString("en-US",{minimumFractionDigits: 2})+
             '</td><td class="colNroFactura celdaTabla text-truncate"  data-toggle="tooltip" data-placement="top" title="'+facturas+'"><span>'+facturas+'</span>'+
             '</td><td class="colRetFecha celdaTabla">'+retencion.ret_fecha.toString().substr(0,10)+
@@ -80,6 +85,7 @@ function refrescarTablaGCIAS() {
                 $("#resumenGcias tbody").html("");
                 var rets=JSON.parse(data);
                 rets.forEach(function(retencion){
+                    console.log("Linea 88 "+JSON.stringify(retencion));
                     totalQuincena+=(retencion.retencion-retencion.ret_ant);
                     if(retencion.fijo){
                         totalQuincena+=retencion.fijo;

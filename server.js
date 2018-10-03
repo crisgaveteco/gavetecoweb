@@ -300,7 +300,7 @@ var getCriterios = function (req, res, next) {
             }
         }
         console.log("Aplicando quincena: " + req.query.quincena);
-        console.log("Fecha desde: "+new Date(fechaDesde).toLocaleString()+" Fecha hasta: "+new Date(fechaHasta).toUTCString());
+        console.log("Fecha desde: " + new Date(fechaDesde).toLocaleString() + " Fecha hasta: " + new Date(fechaHasta).toUTCString());
         req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-08-31 20:59:59"), $lte: new Date("2018-09-30 20:59:59")}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
@@ -467,11 +467,11 @@ var getLineaExpoSICORE = function (retencion) {
             codCond = "01";
             netoFc = parseFloat(retencion.neto);
             ivaFc = parseFloat(retencion.deduc);
-            console.log("Retencion "+retencion.id+" campo ret:ant:"+retencion.ret_ant);
+            console.log("Retencion " + retencion.id + " campo ret:ant:" + retencion.ret_ant);
             impRetencion = parseFloat(retencion.retencion);
-            if (retencion.ret_ant) 
-                impRetencion -=  parseFloat(retencion.ret_ant);
-            
+            if (retencion.ret_ant)
+                impRetencion -= parseFloat(retencion.ret_ant);
+
             if (retencion.fijo) {
                 impRetencion += parseFloat(retencion.fijo);
             }
@@ -491,7 +491,7 @@ var getLineaExpoSICORE = function (retencion) {
     baseCalculo = baseCalculo.toFixed(2);
     baseCalculo = baseCalculo.replace(".", ",");
     baseCalculo = " ".repeat(14 - baseCalculo.length) + baseCalculo;
-    console.log("Importe de la retencion: "+impRetencion);
+    console.log("Importe de la retencion: " + impRetencion);
     impRetencion = impRetencion.toFixed(2);
     impRetencion = impRetencion.replace(".", ",");
     impRetencion = " ".repeat(14 - impRetencion.length) + impRetencion;
@@ -511,7 +511,7 @@ var getLineaExpoSICORE = function (retencion) {
 //        console.log("Cuit:" + cuit);
 //        retencion.cuit=cuit;
 //    });
-    var campoCuit=  retencion.cuit.replace(/-/g,"");
+    var campoCuit = retencion.cuit.replace(/-/g, "");
     campoCuit += " ".repeat(20 - campoCuit.length);
     console.log("Retencion en funcion final: " + JSON.stringify(retencion.impuesto));
     return tipoFc + fechaFc + fc + totalFc + codImp +
@@ -583,7 +583,8 @@ app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
     var retenciones = "";
     retIva.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-09-01"), $lte: new Date("2018-09-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-10-01"), $lte: new Date("2018-10-31")}]}},
+        include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retIVa) {
         //console.log("Retenciones encontradas: " + retIVa);
@@ -594,7 +595,8 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
     var retGCIAS = db.retenciones_gcias;
     var retenciones = "";
     retGCIAS.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-09-01"), $lte: new Date("2018-09-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-10-01"), $lte: new Date("2018-10-31")}]}},
+        include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (ret) {
         //console.log("Retenciones GCIAS encontradas: " + ret);
@@ -605,10 +607,11 @@ app.post("/retenciones/ARBAQuincena", function (req, res) {
     var retARBA = db.retenciones_arba;
     var retenciones = "";
     retARBA.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-08-01"), $lte: new Date("2018-08-31")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-10-01"), $lte: new Date("2018-10-31")}]}},
+        include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retARBA) {
-        //console.log("Retenciones encontradas: " + retIVa);
+        console.log("Retenciones encontradas: " + retARBA);
         res.send(JSON.stringify(retARBA));
     });
 });
@@ -678,9 +681,90 @@ app.post("/avm/proveedor", function (req, res) {
             if (err) {
                 console.log(err);
             }
-            var provDB = db.proveedor;
+            var provDB = db.prov;
             console.log(data);
             var prov = new ProveedorAVM(data);
+            if (prov.codigo !== "PARAMETROS ERRONEOS\r\n") {
+                provDB.create({
+                    codigo: prov.codigo,
+                    nombre: prov.nombre,
+                    direccion: prov.direccion,
+                    cpostal: prov.cpostal,
+                    localidad: prov.localidad,
+                    provincia: prov.provincia,
+                    telefono: prov.telefono,
+                    fax: prov.fax,
+                    email: prov.email,
+                    ctaprov: prov.ctaprov,
+                    cuit: prov.cuit,
+                    condfis: prov.condfis,
+                    retivasn: prov.retivasn,
+                    porretiva: prov.porretiva,
+                    retgansn: prov.retgansn,
+                    concepto: prov.concepto,
+                    inscgansn: prov.inscgansn,
+                    observaciones: prov.observaciones,
+                    cta2: prov.cta2,
+                    cta3: prov.cta3,
+                    cta4: prov.cta4,
+                    porc1: prov.porc1,
+                    porc2: prov.porc2,
+                    porc3: prov.porc3,
+                    porc4: prov.porc4,
+                    vtoco: prov.vtoco,
+                    nroInscrIB: prov.nroInscrIB,
+                    VencRetIVA: prov.VencRetIVA,
+                    VencRetGan: prov.VencRetGan,
+                    RetIBBASN: prov.RetIBBASN,
+                    PrRetIBBA: prov.PrRetIBBA,
+                    RetPrevSN: prov.RetPrevSN,
+                    PorRetPrev: prov.PorRetPrev,
+                    VencRetPrev: prov.VencRetPrev,
+                    RetPescaSN: prov.RetPescaSN,
+                    InscPescaSN: prov.InscPescaSN
+                }).then(function (result) {}).catch(function (e) {
+                    provDB.update(
+                            {
+                                nombre: prov.nombre,
+                                direccion: prov.direccion,
+                                cpostal: prov.cpostal,
+                                localidad: prov.localidad,
+                                provincia: prov.provincia,
+                                telefono: prov.telefono,
+                                fax: prov.fax,
+                                email: prov.email,
+                                ctaprov: prov.ctaprov,
+                                cuit: prov.cuit,
+                                condfis: prov.condfis,
+                                retivasn: prov.retivasn,
+                                porretiva: prov.porretiva,
+                                retgansn: prov.retgansn,
+                                concepto: prov.concepto,
+                                inscgansn: prov.inscgansn,
+                                observaciones: prov.observaciones,
+                                cta2: prov.cta2,
+                                cta3: prov.cta3,
+                                cta4: prov.cta4,
+                                porc1: prov.porc1,
+                                porc2: prov.porc2,
+                                porc3: prov.porc3,
+                                porc4: prov.porc4,
+                                vtoco: prov.vtoco,
+                                nroInscrIB: prov.nroInscrIB,
+                                VencRetIVA: prov.VencRetIVA,
+                                VencRetGan: prov.VencRetGan,
+                                RetIBBASN: prov.RetIBBASN,
+                                PrRetIBBA: prov.PrRetIBBA,
+                                RetPrevSN: prov.RetPrevSN,
+                                PorRetPrev: prov.PorRetPrev,
+                                VencRetPrev: prov.VencRetPrev,
+                                RetPescaSN: prov.RetPescaSN,
+                                InscPescaSN: prov.InscPescaSN
+
+                            }, {where: {
+                            codigo: prov.codigo}});
+                });
+            }
             console.log(JSON.stringify(prov));
             res.send(JSON.stringify(prov));
         });
@@ -690,7 +774,7 @@ app.post("/retenciones/emitir/iva", function (req, res) {
     console.log(JSON.stringify(req.body));
     res.set("encoding", "latin1");
     var RetencionIva = db.retenciones_iva;
-    db.sequelize.sync();
+    //db.sequelize.sync();
     req.body.retencion.id = 0;
     var nroDeRetencion = "";
     RetencionIva.create(
@@ -720,7 +804,7 @@ app.post("/retenciones/emitir/iva", function (req, res) {
 app.post("/retenciones/emitir/gcias", function (req, res) {
     console.log(JSON.stringify(req.body));
     var RetencionGCIAS = db.retenciones_gcias;
-    db.sequelize.sync();
+    //db.sequelize.sync();
     var nroDeRetencion = "";
     console.log(req.body.factura.fechaFc);
     RetencionGCIAS.create(
@@ -756,8 +840,9 @@ app.post("/retenciones/emitir/gcias", function (req, res) {
 app.post("/retenciones/emitir/IIBBarba", function (req, res) {
     //console.log(JSON.stringify(req.body));
     var RetencionARBA = db.retenciones_arba;
-    db.sequelize.sync();
+    //db.sequelize.sync();
     var nroDeRetencion = "";
+    res.set("encoding", "latin1");
     RetencionARBA.create(
             {prov: req.body.proveedor.codigo,
                 cuit: req.body.proveedor.cuit,
@@ -777,16 +862,16 @@ app.post("/retenciones/emitir/IIBBarba", function (req, res) {
         console.log(registro.id + " el el then");
         nroDeRetencion = registro.id;
         console.log(nroDeRetencion + " variable");
-        res.set("encoding", "latin1");
-        res.render("./retenciones/retIIBBcaba", {req: req.body, nroRet: nroDeRetencion});
+        
+        res.render("./retenciones/retIIBBarba", {req: req.body, nroRet: nroDeRetencion});
         res.end();
     });
-    res.render("./retenciones/retIIBBarba", {req: req.body, nroRet: nroDeRetencion});
+    //res.render("./retenciones/retIIBBarba", {req: req.body, nroRet: nroDeRetencion});
 });
 app.post("/retenciones/emitir/IIBBcaba", function (req, res) {
     console.log(JSON.stringify(req.body));
     var RetencionCABA = db.retenciones_caba;
-    db.sequelize.sync();
+    //db.sequelize.sync();
     var nroDeRetencion = "";
     console.log(req.body.factura.fechaFc);
     RetencionCABA.create(

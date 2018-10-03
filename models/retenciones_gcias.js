@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   retenciones_gcias.associate = function(models) {
     // associations can be defined here
-    
+    retenciones_gcias.belongsTo(models.prov, { foreignKey: 'prov' , as : 'proveedor'});
   };
   return retenciones_gcias;
 };

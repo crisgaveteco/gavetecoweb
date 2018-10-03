@@ -20,7 +20,7 @@
     var factura = req.factura.ptoVta+"-"+req.factura.nroFc;
     var porcRet = req.retencion.porcRet;
     var regimen = req.retencion.regimen;*/
-    var nroRet = req.nroRet;
+    var nroRet = "0".repeat(8-nroRet.toString().length).concat(parseInt(nroRet));
     var razonSoc = req.proveedor.nombre;
     var cuit = req.proveedor.cuit;
     var IIBBn = req.proveedor.iibbn;
