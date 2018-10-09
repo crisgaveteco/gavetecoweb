@@ -607,7 +607,7 @@ app.post("/retenciones/ARBAQuincena", function (req, res) {
     var retARBA = db.retenciones_arba;
     var retenciones = "";
     retARBA.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-10-01"), $lte: new Date("2018-10-31")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-09-01"), $lte: new Date("2018-09-31")}]}},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retARBA) {
