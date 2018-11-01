@@ -21,8 +21,8 @@ function agregarFilaRetencion(retencion,impuesto){
     switch(impuesto){
         case "Gcias":
         importeRetencion=retencion.retencion-retencion.ret_ant;
-        if(retencion.ret_fijo){
-            importeRetencion-=retencion.ret_fijo;
+        if(retencion.fijo){
+            importeRetencion+=retencion.fijo;
         }
         proveedor=retencion.proveedor.nombre;
         facturas=retencion.facs;
