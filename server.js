@@ -301,7 +301,7 @@ var getCriterios = function (req, res, next) {
         }
         console.log("Aplicando quincena: " + req.query.quincena);
         console.log("Fecha desde: " + new Date(fechaDesde).toLocaleString() + " Fecha hasta: " + new Date(fechaHasta).toUTCString());
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-10-15 20:59:59"), $lte: new Date("2018-10-31 20:59:59")}]}});
+        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-10-31 20:59:59"), $lte: new Date("2018-10-15 20:59:59")}]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
@@ -648,10 +648,67 @@ app.post("/retenciones/ARBAQuincena", function (req, res) {
 //    );
 //    connection.end();
 //});
+app.post("/avm/estcomp", function (req, res) {
+    var estcompDB = db.estcomp;
+    var fs = require('fs');
+    var formidable = require('formidable');
+    //db.estcomp.sync({force:true});
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        //var reader = new FileReader();
+        //var contenido = reader.readAsText(req.body.archivo);
+        console.log(JSON.stringify(files));
+        fs.readFile(files.archivo.path, "latin1", function (err, data) {
+            var lineas = data.split("\r\n");
+            lineas.forEach(function (linea) {
+                var datos = linea.split(";");
+                console.log(datos.length);
+                if (datos.length == 20)
+                    estcompDB.create({
+                        nroInterno: datos[0],
+                        tipoComp: datos[1],
+                        fechaFac: datos[2],
+                        ptoVta: datos[3],
+                        nroFc: datos[4],
+                        cuit: datos[5],
+                        netog: datos[7],
+                        iva: datos[8],
+                        cero: datos[9],
+                        computable: datos[10],
+                        retencion: datos[11],
+                        fechaDePago: datos[12],
+                        fechaDDJJ: datos[13],
+                        descripcion: datos[14],
+                        codNoRet: datos[15],
+                        certExclusion: datos[16],
+                        tipoCredFiscal: datos[17],
+                        pu: datos[18],
+                        cant: datos[19]
+                    });
+            });
+
+        });
+    });
+    res.write('File uploaded');
+    res.end();
+
+});
+
+app.get("/compras/marea", function(req,res){
+    var pesca_barcoDB = db.pesca_barco;
+    var pesca_mareaDB = db.pesca_marea;
+    var pesca_barcos_provsDB = db.pesca_barcos_provs;
+    //pesca_barcoDB.sync({alter:true});
+    //pesca_barcos_provsDB.sync({force:true});
+    //pesca_mareaDB.sync({force:true});
+    
+});
+
 app.post("/avm/comprobante", function (req, res) {
     var fs = require('fs');
     var cp = require("child_process").execFile;
     var valorABuscar = "";
+    console.log("req.body.nroInterno=" + req.body.nroInterno);
     if (req.body.nroInterno) {
         valorABuscar = req.body.nroInterno;
     } else {
@@ -663,11 +720,127 @@ app.post("/avm/comprobante", function (req, res) {
         fs.readFile("C:\\AVM\\EXPO\\AVM.TXT", "latin1", function (err, data) {
             if (err) {
                 console.log("Error: " + err);
+            } else {
+                var comproDB = db.compro;
+                //comproDB.sync({force: true});
+                var comp = new ComprobanteAVM(data);
+                var vtoDeCAI = comp.vtocai;
+                if (comp.vtocai == "00/00/0000") {
+                    vtoDeCAI = null;
+                } else {
+                    vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
+                }
+                if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
+                    comproDB.create({
+                        nroInterno: comp.NroInterno,
+                        FDC: comp.FDC,
+                        nroCompro: comp.NroCompro,
+                        fecha: Date.parse(comp.Fecha.split("/")[2] + "-" + comp.Fecha.split("/")[1] + "-" + comp.Fecha.split("/")[0]),
+                        proveedor: comp.Proveedor,
+                        letraABC: comp.LetraABC,
+                        bruto21: comp.Bruto21,
+                        iva21: comp.IVA21,
+                        bruto1050: comp.Bruto1050,
+                        iva1050: comp.IVA1050,
+                        bruto27: comp.Bruto27,
+                        iva27: comp.IVA27,
+                        retIVA: comp.RetIVA,
+                        percIVA: comp.PercIVA,
+                        retIB: comp.RetIB,
+                        percIB: comp.PercIB,
+                        retGan: comp.RetGan,
+                        percGan: comp.PercGan,
+                        noGravado: comp.NoGravado,
+                        monotributo: comp.Monotributo,
+                        exento: comp.Exento,
+                        iInterno: comp.IInternos,
+                        iMunicipales: comp.IMunicipales,
+                        iNacionales: comp.INacionales,
+                        fRegCont: Date.parse(comp.FRegCont.split("/")[2] + "-" + comp.FRegCont.split("/")[1] + "-" + comp.FRegCont.split("/")[0]),
+                        contado: comp.contado,
+                        ctaacred: comp.ctaacred,
+                        ctap2: comp.ctap2,
+                        ctap3: comp.ctap3,
+                        ctap4: comp.ctap4,
+                        imp1: comp.imp1,
+                        imp2: comp.imp2,
+                        imp3: comp.imp3,
+                        imp4: comp.imp4,
+                        observ: comp.Observ,
+                        obs2: comp.Obs2,
+                        cotiza: comp.cotiza,
+                        tico: comp.tico,
+                        cai: comp.cai,
+                        vtoCAI: vtoDeCAI,
+                        contr: comp.contr,
+                        aduana: comp.Aduana,
+                        destino: comp.Destino,
+                        despacho: comp.Despacho,
+                        letraDesp: comp.LetraDesp,
+                        cc: comp.cc,
+                        cuentaBco: comp.CuentaBco,
+                        total: comp.Total,
+                        fechaAMD: comp.FechaAMD
+                    }).then(function (result) {}).catch(function (e) {
+                        comproDB.update(
+                                {
+                                    FDC: comp.FDC,
+                                    nroCompro: comp.NroCompro,
+                                    fecha: Date.parse(comp.Fecha.split("/")[2] + "-" + comp.Fecha.split("/")[1] + "-" + comp.Fecha.split("/")[0]),
+                                    proveedor: comp.Proveedor,
+                                    letraABC: comp.LetraABC,
+                                    bruto21: comp.Bruto21,
+                                    iva21: comp.IVA21,
+                                    bruto1050: comp.Bruto1050,
+                                    iva1050: comp.IVA1050,
+                                    bruto27: comp.Bruto27,
+                                    iva27: comp.IVA27,
+                                    retIVA: comp.RetIVA,
+                                    percIVA: comp.PercIVA,
+                                    retIB: comp.RetIB,
+                                    percIB: comp.PercIB,
+                                    retGan: comp.RetGan,
+                                    percGan: comp.PercGan,
+                                    noGravado: comp.NoGravado,
+                                    monotributo: comp.Monotributo,
+                                    exento: comp.Exento,
+                                    iInterno: comp.IInternos,
+                                    iMunicipales: comp.IMunicipales,
+                                    iNacionales: comp.INacionales,
+                                    fRegCont: Date.parse(comp.FRegCont.split("/")[2] + "-" + comp.FRegCont.split("/")[1] + "-" + comp.FRegCont.split("/")[0]),
+                                    contado: comp.contado,
+                                    ctaacred: comp.ctaacred,
+                                    ctap2: comp.ctap2,
+                                    ctap3: comp.ctap3,
+                                    ctap4: comp.ctap4,
+                                    imp1: comp.imp1,
+                                    imp2: comp.imp2,
+                                    imp3: comp.imp3,
+                                    imp4: comp.imp4,
+                                    observ: comp.Observ,
+                                    obs2: comp.Obs2,
+                                    cotiza: comp.cotiza,
+                                    tico: comp.tico,
+                                    cai: comp.cai,
+                                    vtoCAI: vtoDeCAI,
+                                    contr: comp.contr,
+                                    aduana: comp.Aduana,
+                                    destino: comp.Destino,
+                                    despacho: comp.Despacho,
+                                    letraDesp: comp.LetraDesp,
+                                    cc: comp.cc,
+                                    cuentaBco: comp.CuentaBco,
+                                    total: comp.Total,
+                                    fechaAMD: comp.FechaAMD
+                                }, {where: {
+                                nroInterno: comp.NroInterno}});
+                    });
+                }
+                console.log("Data: " + data);
+                console.log("JSON: " + JSON.stringify(comp));
+                res.send(JSON.stringify(comp));
+                //res.end();
             }
-            var comp = new ComprobanteAVM(data);
-            console.log("Data: " + data);
-            console.log("JSON: " + JSON.stringify(comp));
-            res.send(JSON.stringify(comp));
         });
     });
 });
@@ -862,7 +1035,7 @@ app.post("/retenciones/emitir/IIBBarba", function (req, res) {
         console.log(registro.id + " el el then");
         nroDeRetencion = registro.id;
         console.log(nroDeRetencion + " variable");
-        
+
         res.render("./retenciones/retIIBBarba", {req: req.body, nroRet: nroDeRetencion});
         res.end();
     });
