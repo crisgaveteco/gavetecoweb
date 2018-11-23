@@ -726,7 +726,7 @@ app.post("/avm/comprobante", function (req, res) {
                 var comp = new ComprobanteAVM(data);
                 if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
                     var vtoDeCAI = comp.vtocai;
-                    if (comp.vtocai === "00/00/0000"||comp.vtocai===null) {
+                    if (comp.vtocai == "00/00/0000"||comp.vtocai==null) {
                         vtoDeCAI = null;
                     } else {
                         vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
