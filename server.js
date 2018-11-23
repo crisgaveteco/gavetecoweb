@@ -725,7 +725,7 @@ app.post("/avm/comprobante", function (req, res) {
                 var comproDB = db.compro;
                 var comp = new ComprobanteAVM(data);
                 console.log(comp.nroInterno);
-                if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
+                if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n"&&comp.nroInterno!=null) {
                     var vtoDeCAI=comp.vtocai;
                     if (vtoDeCAI == "00/00/0000"||vtoDeCAI==null) {
                         vtoDeCAI = null;
