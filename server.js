@@ -735,7 +735,7 @@ app.post("/avm/comprobante", function (req, res) {
                         nroInterno: comp.NroInterno,
                         FDC: comp.FDC,
                         nroCompro: comp.NroCompro,
-                        fecha: Date.parse(comp.Fecha.split("/")[2] + "-" + comp.Fecha.split("/")[1] + "-" + comp.Fecha.split("/")[0]),
+                        fecha: vtoDeCAI,
                         proveedor: comp.Proveedor,
                         letraABC: comp.LetraABC,
                         bruto21: comp.Bruto21,
