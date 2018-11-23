@@ -725,11 +725,11 @@ app.post("/avm/comprobante", function (req, res) {
                 var comproDB = db.compro;
                 var comp = new ComprobanteAVM(data);
                 if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
-                    var vtoDeCAI = comp.vtocai;
-                    if (comp.vtocai == "00/00/0000"||comp.vtocai==undefined) {
+                    var vtoDeCAI=comp.vtocai;
+                    if (vtoDeCAI == "00/00/0000"||vtoDeCAI==null) {
                         vtoDeCAI = null;
-                    } else {
-                        vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
+                    }else{
+                        vtoDeCAI = Date.parse(comp.vtoDeCAI.split("/")[2] + "-" + vtoDeCAI.split("/")[1] + "-" + vtoDeCAI.split("/")[0]);
                     }
                     comproDB.create({
                         nroInterno: comp.NroInterno,
