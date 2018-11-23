@@ -721,16 +721,16 @@ app.post("/avm/comprobante", function (req, res) {
             if (err) {
                 console.log("Error: " + err);
             } else {
-                var comproDB = db.compro;
                 //comproDB.sync({force: true});
-                var comp = new ComprobanteAVM(data);
-                var vtoDeCAI = comp.vtocai;
-                if (comp.vtocai == "00/00/0000") {
-                    vtoDeCAI = null;
-                } else {
-                    vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
-                }
                 if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
+                    var comproDB = db.compro;
+                    var comp = new ComprobanteAVM(data);
+                    var vtoDeCAI = comp.vtocai;
+                    if (comp.vtocai == "00/00/0000") {
+                    vtoDeCAI = null;
+                    } else {
+                    vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
+                    }
                     comproDB.create({
                         nroInterno: comp.NroInterno,
                         FDC: comp.FDC,
