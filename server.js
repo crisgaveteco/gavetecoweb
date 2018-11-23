@@ -694,14 +694,14 @@ app.post("/avm/estcomp", function (req, res) {
 
 });
 
-app.get("/compras/marea", function(req,res){
+app.get("/compras/marea", function (req, res) {
     var pesca_barcoDB = db.pesca_barco;
     var pesca_mareaDB = db.pesca_marea;
     var pesca_barcos_provsDB = db.pesca_barcos_provs;
     //pesca_barcoDB.sync({alter:true});
     //pesca_barcos_provsDB.sync({force:true});
     //pesca_mareaDB.sync({force:true});
-    
+
 });
 
 app.post("/avm/comprobante", function (req, res) {
@@ -722,14 +722,14 @@ app.post("/avm/comprobante", function (req, res) {
                 console.log("Error: " + err);
             } else {
                 //comproDB.sync({force: true});
+                var comproDB = db.compro;
+                var comp = new ComprobanteAVM(data);
                 if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n") {
-                    var comproDB = db.compro;
-                    var comp = new ComprobanteAVM(data);
                     var vtoDeCAI = comp.vtocai;
                     if (comp.vtocai == "00/00/0000") {
-                    vtoDeCAI = null;
+                        vtoDeCAI = null;
                     } else {
-                    vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
+                        vtoDeCAI = Date.parse(comp.vtocai.split("/")[2] + "-" + comp.vtocai.split("/")[1] + "-" + comp.vtocai.split("/")[0]);
                     }
                     comproDB.create({
                         nroInterno: comp.NroInterno,
