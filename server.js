@@ -730,7 +730,7 @@ app.post("/avm/comprobante", function (req, res) {
                     if (vtoDeCAI == "00/00/0000"||vtoDeCAI==null) {
                         vtoDeCAI = null;
                     }else{
-                        vtoDeCAI = Date.parse(comp.vtoDeCAI.split("/")[2] + "-" + vtoDeCAI.split("/")[1] + "-" + vtoDeCAI.split("/")[0]);
+                        vtoDeCAI = Date.parse(vtoDeCAI.split("/")[2] + "-" + vtoDeCAI.split("/")[1] + "-" + vtoDeCAI.split("/")[0]);
                     }
                     comproDB.create({
                         nroInterno: comp.NroInterno,
