@@ -732,6 +732,12 @@ app.post("/avm/comprobante", function (req, res) {
                     }else{
                         vtoDeCAI = Date.parse(vtoDeCAI.split("/")[2] + "-" + vtoDeCAI.split("/")[1] + "-" + vtoDeCAI.split("/")[0]);
                     }
+                    var FRegCont=comp.FRegCont;
+                    if (FRegCont == "00/00/0000"||FRegCont==null) {
+                        FRegCont = null;
+                    }else{
+                        FRegCont = Date.parse(FRegCont.split("/")[2] + "-" + FRegCont.split("/")[1] + "-" + FRegCont.split("/")[0]);
+                    }
                     comproDB.create({
                         nroInterno: comp.NroInterno,
                         FDC: comp.FDC,
