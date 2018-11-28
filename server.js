@@ -38,7 +38,7 @@ mimeTypes = {
 //    database: "recuperoweb"
 //});
 var ComprobanteAVM = function (lineaDatos) {
-    console.log(lineaDatos);
+    console.log("Linea datos: "+lineaDatos);
     var datos = lineaDatos.split(";");
     this.NroInterno = datos[0];
     this.FDC = datos[1];
@@ -725,7 +725,7 @@ app.post("/avm/comprobante", function (req, res) {
                 var comproDB = db.compro;
                 var comp = new ComprobanteAVM(data);
                 console.log(comp.nroInterno);
-                if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n"&&comp.nroInterno!=null) {
+                if (comp.nroInterno !== "PARAMETROS ERRONEOS\r\n"&&comp.nroInterno!==null) {
                     var vtoDeCAI=comp.vtocai;
                     if (vtoDeCAI == "00/00/0000"||vtoDeCAI==null) {
                         vtoDeCAI = null;
