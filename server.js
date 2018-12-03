@@ -589,7 +589,7 @@ app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
     var retenciones = "";
     retIva.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-01"), $lte: new Date("2018-11-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retIVa) {
@@ -601,7 +601,7 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
     var retGCIAS = db.retenciones_gcias;
     var retenciones = "";
     retGCIAS.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-01"), $lte: new Date("2018-11-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (ret) {
@@ -613,7 +613,7 @@ app.post("/retenciones/ARBAQuincena", function (req, res) {
     var retARBA = db.retenciones_arba;
     var retenciones = "";
     retARBA.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-01"), $lte: new Date("2018-11-30")}]}},
+                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retARBA) {
