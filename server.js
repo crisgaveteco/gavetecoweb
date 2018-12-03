@@ -13,6 +13,7 @@ var ejs = require("ejs");
 var path = require("path");
 var fs = require('fs');
 var sequelize = require('sequelize');
+const Op = sequelize.Op; 
 var db = require("./models");
 require('./lib/helper.js');
 var publicPath = path.join(__dirname, 'public');
@@ -40,6 +41,7 @@ mimeTypes = {
 var ComprobanteAVM = function (lineaDatos) {
     console.log("Linea datos: "+lineaDatos);
     var datos = lineaDatos.split(";");
+    if(!datos[0].includes("PARAMETROS ERR")){
     this.NroInterno = datos[0];
     this.FDC = datos[1];
     this.NroCompro = datos[2];
@@ -89,6 +91,9 @@ var ComprobanteAVM = function (lineaDatos) {
     this.CuentaBco = datos[46];
     this.Total = datos[47];
     this.FechaAMD = datos[48];
+    }else{
+        return null;
+    }
 };
 var ProveedorAVM = function (lineaDatos) {
     var datos = lineaDatos.split(";");
@@ -301,7 +306,8 @@ var getCriterios = function (req, res, next) {
         }
         console.log("Aplicando quincena: " + req.query.quincena);
         console.log("Fecha desde: " + new Date(fechaDesde).toLocaleString() + " Fecha hasta: " + new Date(fechaHasta).toUTCString());
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-10-31 20:59:59"), $lte: new Date("2018-11-15 20:59:59")}]}});
+        //req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-10-31 20:59:59"), $lte: new Date("2018-11-15 20:59:59")}]}});
+        req.criterios.push({ret_fecha: {[Op.between]: [new Date("2018-10-31 20:59:59"),new Date("2018-11-15 20:59:59")]}});
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
