@@ -64,6 +64,13 @@ function getNextRet(){
             success: function (data) {
                 console.log("Datos recibidos en index.js linea 65: "+JSON.parse(data));
                 $("#nextRet").val(JSON.parse(data));
+                $("#nextRet").attr("disabled",false);
+                $("#setNextRetBtn").attr("disabled",false);
+                setTimeout(function(){
+                    $("#nextRet").attr("disabled",true);
+                    $("#setNextRetBtn").attr("disabled",true);
+                    $("#nextRet").val("");
+                },10000);
             },
             error: function (response)
             {

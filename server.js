@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
-var sequelize2=new sequelize('gaveteco','root','mysql',{host: 'localhost',dialect:'mysql'});
+var sequelize2=new sequelize('gaveteco','root',null,{host: 'localhost',dialect:'mysql'});
 //app.use(express.static("./public"));
 //app.use('/public', express.static('public'));
 
