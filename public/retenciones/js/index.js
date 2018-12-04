@@ -55,7 +55,40 @@ function agregarFilaRetencion(retencion,impuesto){
             '</td><td class="colRetFecha celdaTabla">'+retencion.ret_fecha.toString().substr(0,10)+
             '</td><td class="colAcciones celdaTabla"><a><i class="fas fa-print"></i></a><a><i class="fas fa-eye"></i></a><a><i class="fas fa-times-circle"></i></a></td></tr>');
 }
-
+function getNextRet(){
+      $.post({
+            url: 'IVA/getNextRet',
+            contentType: 'application/json',
+            cache: false,
+            async: true,
+            success: function (data) {
+                console.log("Datos recibidos en index.js linea 65: "+JSON.parse(data));
+                $("#nextRet").val(JSON.parse(data));
+            },
+            error: function (response)
+            {
+                alert('error al guardar los datos');
+            }
+            //return false;
+        });
+}
+function setNextRet(){
+    $.post({
+            url: 'IVA/setNextRet',
+            contentType: 'application/json',
+            cache: false,
+            data: JSON.stringify({nextId:$("#nextRet").val()}),
+            async: true,
+            success: function (data) {
+                
+            },
+            error: function (response)
+            {
+                alert('error al guardar los datos');
+            }
+            //return false;
+        });
+}
 function refrescarTablaIva() {
     console.log("Actualizando tabla");
     var totalQuincena=0;

@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
+var sequelize2=new sequelize('gaveteco','root','mysql',{host: 'localhost',dialect:'mysql'});
 //app.use(express.static("./public"));
 //app.use('/public', express.static('public'));
 
@@ -559,6 +560,16 @@ app.get("/retenciones/expoSicore", pedirIvayGCIAS, getCriterios, getRetencionesI
         });
     });
 });
+app.post("/retenciones/IVA/getNextRet",function(req,res){
+    sequelize2.query("SHOW TABLE STATUS LIKE 'retenciones_ivas';", { type:sequelize.QueryTypes.SHOW}).then(function(data){
+        res.send(JSON.stringify(JSON.stringify(data[0][0].Auto_increment)));
+    });
+});
+
+app.post("/retenciones/IVA/setNextRet",function(req,res){
+    sequelize2.query("ALTER TABLE `gaveteco`.`retenciones_ivas` AUTO_INCREMENT = "+req.body.nextId+";");
+});
+
 app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
     console.log(JSON.stringify(req.body));

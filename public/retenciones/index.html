@@ -77,9 +77,9 @@ and open the template in the editor.
                         <div id="resumenIva" class="">
                             <h2 class="sub-header">RETENCIONES DE IVA</h2>
                             <span>Total quincena: </span><span id="totalQuincenaIva"></span>
-                            <input id="getNextRetBtn" type="button" value="Actualizar">
-                            <input id="nextRetBtn" type="number">
-                            <input id="setNextRetBtn" type="button" value="Grabar">
+                            <button id="getNextRetBtn" type="button" onclick="getNextRet()"><i class="fas fa-sync"></i></button>
+                            <input id="nextRet" type="number">
+                            <button id="setNextRetBtn" type="button" onclick="setNextRet()"><i class="fas fa-save"></i></button>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead>
