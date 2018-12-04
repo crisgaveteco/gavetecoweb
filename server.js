@@ -265,49 +265,23 @@ var getCriterios = function (req, res, next) {
     req.retenciones = new Array();
     if (req.query.fechaDesde && req.query.fechaHasta) {
         console.log("Aplicando fecha: Desde: " + req.query.fechaDesde + " Hasta: " + req.query.fechaHasta);
-        req.criterios.push({ret_fecha: {$and: [{$gte: new Date(req.query.fechaDesde), $lte: new Date(req.query.fechaHasta)}]}});
+        req.criterios.push({ret_fecha: {[Op.and]: [{[Op.gte]: new Date(req.query.fechaDesde), [Op.lte]: new Date(req.query.fechaHasta)}]}});
     }
     if (req.query.prov) {
         req.criterios.push({prov: req.query.prov});
     }
     if (req.query.quincena) {
-        var fechaDesde = req.query.año + "-" + req.query.mes + "-";
-        var fechaHasta = req.query.año + "-" + req.query.mes + "-";
+        var comparador;
         if (req.query.quincena === "1") {
-            fechaDesde += "01";
-            fechaHasta += "15";
+            comparador="<";
         } else {
-            fechaDesde += "16";
-            switch (req.query.mes) {
-                case "1":
-                case "3":
-                case "5":
-                case "7":
-                case "8":
-                case "10":
-                case "12":
-                    fechaHasta += "31";
-                    break;
-                case "2":
-                    if (parseInt(req.query.año) / 4 - parseInt(req.query.año) / 4 * 100 > 0) {
-                        fechaHasta += "29";
-                    } else {
-                        fechaHasta += "28";
-                    }
-                    break;
-                case "4":
-                case "6":
-                case "9":
-                case "11":
-                    //console.log("Fecha hasta antes de agregar el 30: "+ fechaHasta);
-                    fechaHasta += "30";
-                    break;
-            }
+            comparador=">="
         }
         console.log("Aplicando quincena: " + req.query.quincena);
-        console.log("Fecha desde: " + new Date(fechaDesde).toLocaleString() + " Fecha hasta: " + new Date(fechaHasta).toUTCString());
         //req.criterios.push({ret_fecha: {$and: [{$gte: new Date("2018-10-31 20:59:59"), $lte: new Date("2018-11-15 20:59:59")}]}});
-        req.criterios.push({ret_fecha: {[Op.between]: [new Date("2018-11-16"),new Date("2018-11-30")]}});
+        //req.criterios.push({ret_fecha: {[Op.between]: [new Date("2018-11-16"),new Date("2018-11-30")]}});
+        req.criterios.push(sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.query.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.query.mes),sequelize.where(sequelize.fn('DAY', sequelize.col('ret_fecha')),comparador, 16));
+                    
         console.log("Criterios " + JSON.stringify(req.criterios));
     }
     return next();
@@ -318,7 +292,7 @@ var getRetencionesIVA = function (req, res, next) {
         var retIva = db.retenciones_iva;
         console.log("Entré a if IVA");
         retIva.findAll({where:
-                    {$and: req.criterios},
+                    {[Op.and]: req.criterios},
             order: [['id', 'ASC']]
         }).then(function (retIVa) {
             //console.log("Retenciones FILTRADAS IVA: " + retIVa);
@@ -587,9 +561,16 @@ app.get("/retenciones/expoSicore", pedirIvayGCIAS, getCriterios, getRetencionesI
 });
 app.post("/retenciones/IvaQuincena", function (req, res) {
     var retIva = db.retenciones_iva;
-    var retenciones = "";
+    console.log(JSON.stringify(req.body));
+    var comparador;
+        if (req.body.quinc === "1") {
+            comparador="<";
+        } else {
+            comparador=">="
+        }
+    //{ret_fecha: {[Op.and]: {[Op.gte]: new Date("2018-09-01"), [Op.lte]: new Date("2018-09-15")}}}
     retIva.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
+                {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.body.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.body.mes),sequelize.where(sequelize.fn('DAY', sequelize.col('ret_fecha')),comparador, 16)]},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retIVa) {
@@ -599,9 +580,14 @@ app.post("/retenciones/IvaQuincena", function (req, res) {
 });
 app.post("/retenciones/GciasQuincena", function (req, res) {
     var retGCIAS = db.retenciones_gcias;
-    var retenciones = "";
+    var comparador;
+        if (req.body.quinc === "1") {
+            comparador="<";
+        } else {
+            comparador=">="
+        }
     retGCIAS.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
+                {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.body.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.body.mes),sequelize.where(sequelize.fn('DAY', sequelize.col('ret_fecha')),comparador, 16)]},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (ret) {
@@ -611,9 +597,14 @@ app.post("/retenciones/GciasQuincena", function (req, res) {
 });
 app.post("/retenciones/ARBAQuincena", function (req, res) {
     var retARBA = db.retenciones_arba;
-    var retenciones = "";
+    var comparador;
+        if (req.body.quinc === "1") {
+            comparador="<";
+        } else {
+            comparador=">="
+        }
     retARBA.findAll({where:
-                {ret_fecha: {$and: [{$gte: new Date("2018-11-16"), $lte: new Date("2018-11-30")}]}},
+                {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.body.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.body.mes),sequelize.where(sequelize.fn('DAY', sequelize.col('ret_fecha')),comparador, 16)]},
         include: 'proveedor',
         order: [['id', 'DESC']]
     }).then(function (retARBA) {

@@ -5,9 +5,18 @@
  */
 
 $(document).ready(function () {
+    var hoy = new Date();
+    $("#añoListado").val(hoy.getFullYear());
+    $("#mesListado").val(hoy.getMonth()+1);
+    if(hoy.getDay()<16){
+        $("#quincListado").val(1);
+    }else{
+        $("#quincListado").val(2);
+    }
     refrescarTablas();
     setInterval(refrescarTablas, 20000);
 });
+
 
 function refrescarTablas(){
     refrescarTablaIva();
@@ -53,7 +62,7 @@ function refrescarTablaIva() {
   $.post({
             url: 'IvaQuincena',
             contentType: 'application/json',
-            data: JSON.stringify({fechaDesde: new Date("2018-05-01") ,fechaHasta:new Date("2018-05-15")}),
+            data: JSON.stringify({año: $("#añoListado").val() ,mes:$("#mesListado").val(),quinc:$("#quincListado").val()}),
             cache: false,
             async: true,
             success: function (data) {
@@ -78,7 +87,7 @@ function refrescarTablaGCIAS() {
   $.post({
             url: 'GciasQuincena',
             contentType: 'application/json',
-            data: JSON.stringify({fechaDesde: new Date("2018-05-01") ,fechaHasta:new Date("2018-05-15")}),
+            data: JSON.stringify({año: $("#añoListado").val() ,mes:$("#mesListado").val(),quinc:$("#quincListado").val()}),
             cache: false,
             async: true,
             success: function (data) {
@@ -107,7 +116,7 @@ function refrescarTablaARBA() {
   $.post({
             url: 'ARBAQuincena',
             contentType: 'application/json',
-            data: JSON.stringify({fechaDesde: new Date("2018-05-01") ,fechaHasta:new Date("2018-05-15")}),
+            data: JSON.stringify({año: $("#añoListado").val() ,mes:$("#mesListado").val(),quinc:$("#quincListado").val()}),
             cache: false,
             async: true,
             success: function (data) {
