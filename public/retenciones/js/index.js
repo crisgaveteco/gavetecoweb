@@ -6,6 +6,7 @@
 
 $(document).ready(function () {
     var hoy = new Date();
+    $("#añoListado").attr("max",hoy.getFullYear());
     $("#añoListado").val(hoy.getFullYear());
     $("#mesListado").val(hoy.getMonth()+1);
     if(hoy.getDay()<16){
@@ -70,7 +71,7 @@ function getNextRet(){
                     $("#nextRet").attr("disabled",true);
                     $("#setNextRetBtn").attr("disabled",true);
                     $("#nextRet").val("");
-                },10000);
+                },7000);
             },
             error: function (response)
             {

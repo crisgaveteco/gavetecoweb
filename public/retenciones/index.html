@@ -48,11 +48,11 @@ and open the template in the editor.
                 <div class="col-12">
                     <div class="col-5">
                         <label>Año:</label>
-                        <input type="number" class="col-3" id="añoListado">
+                        <input type="number" min="2018" class="col-3" id="añoListado">
                         <label>Mes:</label>
-                        <input type="number" class="col-2" id="mesListado">
+                        <input type="number" min="1" max="12" class="col-2" id="mesListado">
                         <label>Quinc:</label>
-                        <input type="number" class="col-2" id="quincListado">
+                        <input type="number" min="1" max="2" class="col-2" id="quincListado">
                         <button onclick="refrescarTablas()">Refresh</button>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ and open the template in the editor.
                             <h2 class="sub-header">RETENCIONES DE IVA</h2>
                             <span>Total quincena: </span><span id="totalQuincenaIva"></span>
                             <button id="getNextRetBtn" type="button" onclick="getNextRet()"><i class="fas fa-sync"></i></button>
-                            <input id="nextRet" type="number" disabled>
+                            <input id="nextRet" type="number" step="1" onkeydown="return false;" disabled>
                             <button id="setNextRetBtn" type="button" onclick="setNextRet()" disabled><i class="fas fa-save"></i></button>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped">
