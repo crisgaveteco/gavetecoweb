@@ -284,6 +284,8 @@ var getCriterios = function (req, res, next) {
         req.criterios.push(sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.query.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.query.mes),sequelize.where(sequelize.fn('DAY', sequelize.col('ret_fecha')),comparador, 16));
                     
         console.log("Criterios " + JSON.stringify(req.criterios));
+    }else{
+        req.criterios.push(sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.query.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.query.mes));
     }
     return next();
 };
