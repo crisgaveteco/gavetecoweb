@@ -264,7 +264,7 @@ app.get("/retenciones/emitir", function (req, res) {
 var getCriterios = function (req, res, next) {
     req.criterios = new Array();
     req.retenciones = new Array();
-    if (req.query.fechaDesde && req.query.fechaHasta) {
+    if (req.query.fechaDesde!=null && req.query.fechaHasta!=null) {
         console.log("Aplicando fecha: Desde: " + req.query.fechaDesde + " Hasta: " + req.query.fechaHasta);
         req.criterios.push({ret_fecha: {[Op.and]: [{[Op.gte]: new Date(req.query.fechaDesde), [Op.lte]: new Date(req.query.fechaHasta)}]}});
     }
