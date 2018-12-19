@@ -273,6 +273,7 @@ var getCriterios = function (req, res, next) {
     }
     if (req.query.quincena) {
         var comparador;
+        var dia = "";
         if (req.query.quincena === "1") {
             comparador="<";
         } else {
@@ -285,6 +286,7 @@ var getCriterios = function (req, res, next) {
                     
         console.log("Criterios " + JSON.stringify(req.criterios));
     }else{
+        if(req.query.año&&req.query.mes)
         req.criterios.push(sequelize.where(sequelize.fn('YEAR', sequelize.col('ret_fecha')), req.query.año),sequelize.where(sequelize.fn('MONTH', sequelize.col('ret_fecha')), req.query.mes));
     }
     return next();
